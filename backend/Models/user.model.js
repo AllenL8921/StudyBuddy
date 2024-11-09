@@ -57,7 +57,7 @@ export default (sequelize) => {
 
         User.belongsToMany(models.Event, {
             through: 'EventUsers',
-            as: 'events',
+            as: 'Events',
             foreignKey: 'userId',
             otherKey: 'eventId',
             onDelete: 'CASCADE',

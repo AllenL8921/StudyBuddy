@@ -29,7 +29,7 @@ export default (sequelize) => {
     ChatRoom.associate = (models) => {
         ChatRoom.belongsToMany(models.User, {
             through: 'UserChatRooms',  // The join table for the many-to-many relationship
-            as: 'participants',                 // alias for this association
+            as: 'Participants',                 // alias for this association
             foreignKey: 'chatRoomId',  // The foreign key for the ChatRooms table
             otherKey: 'clerkUserId',    // The foreign key for the User table
         });

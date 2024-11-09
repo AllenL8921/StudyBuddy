@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
-import { FaCalendarPlus } from "react-icons/fa";
+import { FaCalendarPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-//Import Components
+// Import Components
 import EventCreate from '../components/EventCreate';
 import EventCard from '../components/EventCard';
 import Sidebar from '../components/Sidebar';
 
 const EventList = () => {
-
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -19,10 +18,15 @@ const EventList = () => {
 
     const fetchEvents = async () => {
         setLoading(true);
-        const response = await fetch(`/api/events?page=${page}`);
-        const newEvents = await response.json();
-        setEvents((prev) => [...prev, ...newEvents]);
-        setLoading(false);
+        try {
+            const response = await fetch(`http://localhost:8080/api/events`);
+            const newEvents = await response.json();
+            setEvents((prev) => [...prev, ...newEvents]);
+        } catch (error) {
+            console.error('Error fetching events:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleScroll = () => {
@@ -42,9 +46,10 @@ const EventList = () => {
     return (
         <>
             <Sidebar />
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="container mx-auto p-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="flex min-h-screen">
+                {/* Main Content - */}
+                <div className="container ml-[270px] py-32"> {/* Adjust `ml-[250px]` based on sidebar width */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {events.map((event) => (
                             <EventCard
                                 key={event.id}
@@ -55,20 +60,22 @@ const EventList = () => {
                         ))}
                     </div>
 
-                    {loading && <p className="text-center mt-4">Loading more events...</p>}
+                    {loading && (
+                        <div className="text-center mt-4">
+                            <p>Loading more events...</p>
+                            <div className="spinner-border animate-spin text-blue-500 mt-2"></div>
+                        </div>
+                    )}
                 </div>
 
-                {/* Event Creation Component*/}
-                <div className='fixed bg-gray-300 text-black bottom-5 right-5 p-3 rounded-full'>
-                    <span className="w-8 h-8 flex items-center justify-center text-2xl">
-                        {/* Event Creation Button Here*/}
-
-                    </span>
+                {/* Event Creation Button */}
+                <div className="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
+                    <Link to="/event/create">
+                        <FaCalendarPlus className="text-3xl" />
+                    </Link>
                 </div>
             </div>
-
         </>
-
     );
 };
 

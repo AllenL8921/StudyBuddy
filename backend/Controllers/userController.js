@@ -12,7 +12,32 @@ const getExistingUsers = async (req, res) => {
         const users = await User.findAll();
         res.json(users);
     } catch (error) {
-        res.status(400).json({ error: "Error fetching all existing users." });
+        return res.status(400).json("Error fetching all users.", { error: error.message });
+    }
+};
+
+const findUser = async (req, res) => {
+
+    try {
+
+        const userId = params.userId;
+
+        const user = User.findByPk(userId);
+
+        //TODO::
+        //This route could potentially return a user's chatlogs with another.
+
+        if (user) {
+            console.log("Found user.");
+            return res.status(200).json("User was found.", user);
+        } else {
+            console.log("Error finding user: ", error);
+            return res.status(404).json("Error finding user.", { error: "User is not in DB." });
+        }
+
+    } catch (error) {
+        console.log("Error finding user: ", error);
+        return res.status(400).json("Error finding user.", { error: error.message });
     }
 };
 
@@ -93,4 +118,4 @@ const joinEvent = async (req, res) => {
     }
 };
 
-export { getExistingUsers, addFriend, getFriends, joinEvent };
+export { getExistingUsers, findUser, addFriend, getFriends, joinEvent };

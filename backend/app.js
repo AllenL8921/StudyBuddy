@@ -1,19 +1,23 @@
 import express from "express";
+import cors from 'cors';
 import process from "node:process";
 import { sequelize } from "./Models/_db.js";
 
 //Import routers
 import userRouter from './Routes/userRoutes.js';
 import webRouter from './Routes/webhookRoutes.js';
+import eventRouter from './Routes/eventRoutes.js';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
 // Load API routes
 app.use("/api/users", userRouter);
 app.use("/api/webhooks", webRouter);
+app.use("/api/events", eventRouter);
 
 // Start the server and authenticate the database connection
 const startServer = async () => {

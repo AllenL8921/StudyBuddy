@@ -2,7 +2,7 @@
 import express from 'express';
 
 //Import functionality
-import { getExistingUsers, addFriend, getFriends } from '../Controllers/userController.js';
+import { getExistingUsers, findUser, addFriend, getFriends, joinEvent } from '../Controllers/userController.js';
 
 const router = express.Router();
 
@@ -11,7 +11,8 @@ router.post('/relationships', addFriend);
 
 // GET routes
 router.get('/', getExistingUsers);
+
 router.get('/relationships', getFriends);
-router.get('/relationships/:id',); // This route could potentially return chat data between users
+router.get('/relationships/:id', findUser); // This route could potentially return chat data between users
 
 export default router; 

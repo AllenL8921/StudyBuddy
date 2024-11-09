@@ -29,7 +29,7 @@ export default (sequelize) => {
         // Many-to-many relationship with Event via the join table 'EventAttributes'
         Attribute.belongsToMany(models.Event, {
             through: "EventAttributes",
-            as: "events", // Alias for the related events (i.e) any events that has the attribute
+            as: "Events", // Alias for the related events (i.e) any events that has the attribute
             foreignKey: "attributeId",  // Foreign key for Attribute
             otherKey: "eventId",  // Foreign key for Event
         });

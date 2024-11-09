@@ -40,15 +40,18 @@ export default function Sidebar() {
           {/* User Image from the user object */}
           <div className="flex justify-center items-center">
             <img
-              src={user.imageUrl || '/path/to/default/avatar.png'} // Fallback to a default image if no profile image
-              alt={user.firstName || 'User Avatar'}
+              src={user.imageUrl}
+              alt={user.firstName}
               className="rounded-full w-20 h-20 object-cover" // Customize the size here (80px, 100px, etc.)
             />
           </div>
 
-          {/* User Info */}
+          {/* User Info 
+            - Display userId
+            - Attributes (?)
+          */}
           <div className="text-center mt-4">
-            <p className="text-white text-sm">{user.emailAddresses[0]?.emailAddress || 'No Email'}</p>
+            <p className="text-white text-sm">{user.emailAddresses[0]?.emailAddress}</p>
           </div>
         </div>
       ) : (

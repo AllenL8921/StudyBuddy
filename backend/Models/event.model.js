@@ -35,15 +35,15 @@ export default (sequelize) => {
         // Many-to-many relationship with Users (attendees)
         Event.belongsToMany(models.User, {
             through: "EventUsers",
-            as: "attendees",
-            foreignKey: "EventId",
-            otherKey: "UserId"
+            as: "Attendees",
+            foreignKey: "eventId",
+            otherKey: "userId"
         });
 
         // One-to-many relationship with Attributes (tags)
         Event.belongsToMany(models.Attribute, {
             through: "EventAttributes",
-            as: "tags",
+            as: "Tags",
             foreignKey: "eventId",
             otherKey: "attributeId",
         });
