@@ -66,7 +66,11 @@ const createEvent = async (req, res) => {
 const getAllEvents = async (req, res) => {
 
     try {
+        const page = parseInt(req.query.page) || 1;  // Default to page 1
+        const limit = parseInt(req.query.limit) || 10;  // Default to 10 items per page
+        const offset = (page - 1) * limit;  // Calculate offset based on page and limit
 
+        //TODO:: Apply query logic based on page, limit, offset
         const allEvents = await Event.findAll();
 
         res.status(200).json(allEvents);
@@ -82,5 +86,20 @@ const getAllEvents = async (req, res) => {
     }
 };
 
+const getEvents = async (req, res) => {
+
+    try {
+
+
+    } catch (error) {
+        console.log("Error getting events: ", error);
+
+        return res.status(400).json(
+            {
+                error: "Error getting events.", details: error.message,
+            }
+        )
+    }
+};
 
 export { createEvent, getAllEvents };

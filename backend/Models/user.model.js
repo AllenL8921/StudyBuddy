@@ -49,7 +49,7 @@ export default (sequelize) => {
     User.associate = (models) => {
         User.belongsToMany(models.User, {
             through: 'UserFriends',
-            as: 'Friends',
+            as: 'Friends', // alias
             foreignKey: 'userId',
             otherKey: 'friendId',
             onDelete: 'CASCADE',

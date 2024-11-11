@@ -20,8 +20,8 @@ const CreateEvent = () => {
     });
 
     const [loading, setLoading] = useState(false);
+    const [isFormVisible, setIsFormVisible] = useState(false);
     const [error, setError] = useState('');
-    const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -120,7 +120,8 @@ const CreateEvent = () => {
                             </Link>
                         </form>
                     </div>
-                )}
+                )
+                }
             </div>
         </div>
     );

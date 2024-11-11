@@ -13,6 +13,7 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import StudySession from './pages/StudySession';
 import EventList from './pages/EventList';
+import EventCreatePage from './pages/EventCreatePage';
 import AboutUsPage from './pages/AboutUsPage';
 
 // ProtectedRoute
@@ -36,6 +37,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/sessions" element={<StudySession />} />
         <Route path="/events" element={<EventList />} />
+        <Route path="/event/create" element={<EventCreatePage />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<SignInPage />} />
         <Route path="/chat" element={<ProtectedRoute element={<Chat />} />} /> {/* Protect this route */}
