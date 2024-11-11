@@ -17,6 +17,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
       rejectUnauthorized: false,
     },
   },
+  logging: false,
 });
 
 // Find all files in the current directory that end in `.model.js`
