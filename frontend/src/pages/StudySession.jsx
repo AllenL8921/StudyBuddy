@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 //Import Components
 import Sidebar from "../components/Sidebar";
-
+import Searchbar from "../components/Searchbar";
 const StudySession = () => {
 
     //Contains Data for the study session
@@ -30,6 +30,12 @@ const StudySession = () => {
     return (
         <>
             <Sidebar />
+
+            <div className="flex">
+                <Searchbar></Searchbar>
+
+            </div>
+
 
             <div className="flex justify-around">
                 <div className="flex-col">

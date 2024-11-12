@@ -4,14 +4,15 @@ import { SignIn as ClerkSignIn } from '@clerk/clerk-react';
 import Navbar from '../components/Navbar';
 
 const SignInPage = () => {
+
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar />
       <div className="flex justify-center items-center h-screen bg-gray-100">
-        <ClerkSignIn />
+        <ClerkSignIn
+        />
       </div>
     </>
-
   );
 };
 

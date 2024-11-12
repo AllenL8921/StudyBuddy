@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
+import { FaCalendarPlus } from 'react-icons/fa';
+import { useUser } from '@clerk/clerk-react'; // Assuming you have a custom hook for user data
 
-const CreateEvent = () => {
+const EventForm = () => {
     const { user } = useUser();
-
-    //Get all the necessary data to create an event from the form
-    /*      
-        organizerId : the current userId
-        chatRoomId : the id for the chatroom, can be NULL
-        title : the name for the event, 
-        date : the date of the event, can be NULL
-        description : the description for the event can be NULL
-    */
     const [eventData, setEventData] = useState({
         title: '',
         date: '',
@@ -22,6 +13,9 @@ const CreateEvent = () => {
     const [loading, setLoading] = useState(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [formShrink, setFormShrink] = useState(false);
+    const [isIconVisible, setIsIconVisible] = useState(true); // Icon is visible initially
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,6 +26,7 @@ const CreateEvent = () => {
         e.preventDefault();
         setLoading(true);
         setError('');
+        setSuccess('');
 
         try {
             const response = await fetch('/api/events', {
@@ -49,82 +44,114 @@ const CreateEvent = () => {
                 throw new Error('Failed to create event');
             }
 
-            alert('Event created successfully!');
+            setSuccess('Event created successfully!');
             setEventData({ title: '', date: '', description: '' });
-            setIsFormVisible(false); // Hide form after successful creation
+            setIsFormVisible(false);
+            setFormShrink(true); // Start shrinking animation
+            setIsIconVisible(true); // Show the calendar icon after shrinking
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'An error occurred. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
-    return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="container mx-auto p-4">
-                <h1 className="text-2xl font-bold text-center mb-4">Create Event</h1>
-                {error && <p className="text-red-500" aria-live="assertive">{error}</p>}
+    const handleGoBack = () => {
+        setFormShrink(true); // Trigger shrink animation
+        setTimeout(() => {
+            setIsFormVisible(false);
+            setIsIconVisible(true); // Show the calendar icon after shrink
+        }, 300); // Ensure timing matches the transition duration
+    };
 
-                {!isFormVisible ? (
+    const handleIconClick = () => {
+        setIsFormVisible(true);
+        setIsIconVisible(false); // Hide the icon when the form expands
+        setFormShrink(false); // Reset the shrink animation state
+    };
+
+    return (
+        <div className="relative">
+            {/* Floating Calendar Icon */}
+            {isIconVisible && (
+                <button
+                    onClick={handleIconClick}
+                    className="fixed bottom-5 right-5 p-4 bg-blue-600 text-white text-2xl rounded-full shadow-lg z-50 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                >
+                    <FaCalendarPlus />
+                </button>
+            )}
+
+            {/* Event Form */}
+            {isFormVisible && (
+                <div
+                    className={`fixed bottom-24 right-5 w-72 p-6 bg-white rounded-lg shadow-xl z-40 transition-all transform ${formShrink ? 'scale-100 opacity-100' : 'scale-100 opacity-100'}`}
+                    style={{ transition: 'transform 0.3s ease-out, opacity 0.3s ease-out' }}
+                >
+                    <h3 className="text-lg font-semibold mb-4">Create Event</h3>
+
+                    {error && <div className="text-red-500 mb-4">{error}</div>}
+                    {success && <div className="text-green-500 mb-4">{success}</div>}
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <label htmlFor="title" className="block text-sm font-medium text-gray-700">Event Title</label>
+                            <input
+                                id="title"
+                                name="title"
+                                type="text"
+                                value={eventData.title}
+                                onChange={handleChange}
+                                className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="date" className="block text-sm font-medium text-gray-700">Event Date</label>
+                            <input
+                                id="date"
+                                name="date"
+                                type="date"
+                                value={eventData.date}
+                                onChange={handleChange}
+                                className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Event Description</label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                value={eventData.description}
+                                onChange={handleChange}
+                                className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                rows="4"
+                                required
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full mt-4 bg-blue-600 text-white p-2 rounded-md shadow-sm hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 disabled:bg-blue-400"
+                            disabled={loading}
+                        >
+                            {loading ? 'Submitting...' : 'Create Event'}
+                        </button>
+                    </form>
+
                     <button
-                        onClick={() => setIsFormVisible(true)}
-                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-500 transition duration-200"
+                        onClick={handleGoBack}
+                        className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none"
                     >
-                        Create an Event
+                        &times;
                     </button>
-                ) : (
-                    <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto z-50 relative"> {/* Added z-50 */}
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="block mb-2 text-gray-700">Event Title</label>
-                                <input
-                                    type="text"
-                                    name="title"
-                                    value={eventData.title}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2 text-gray-700">Event Date</label>
-                                <input
-                                    type="datetime-local"
-                                    name="date"
-                                    value={eventData.date}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block mb-2 text-gray-700">Description</label>
-                                <textarea
-                                    name="description"
-                                    value={eventData.description}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                                    rows="4"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                disabled={loading}
-                                className={`px-4 py-2 text-white rounded transition duration-200 ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-500'}`}
-                            >
-                                {loading ? 'Creating...' : 'Create Event'}
-                            </button>
-                            <Link to="/EventList" className="ml-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-black transition duration-200">
-                                Go Back
-                            </Link>
-                        </form>
-                    </div>
-                )
-                }
-            </div>
+                </div>
+            )}
         </div>
     );
 };
 
-export default CreateEvent;
+export default EventForm;

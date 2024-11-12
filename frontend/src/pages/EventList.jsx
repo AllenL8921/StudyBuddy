@@ -96,9 +96,7 @@ const EventList = () => {
 
                 {/* Event Creation Button */}
                 <div className="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
-                    <Link to="/event/create">
-                        <FaCalendarPlus className="text-3xl" />
-                    </Link>
+                    <EventCreate></EventCreate>
                 </div>
             </div>
         </>

@@ -66,6 +66,7 @@ const handleUserCreated = async (id, attributes) => {
         await User.create({
             clerkUserId: id, // Use id from verified event data
             username: attributes.username || 'DefaultUsername',
+            displayName: `Anonymous`,
             email: attributes.email_addresses[0]?.email_address || 'default@example.com',
             password: attributes.password
         });

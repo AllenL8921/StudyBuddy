@@ -1,41 +1,24 @@
-// migration.cjs
 'use strict';
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('Messages', {
-            roomId: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-            },
-            messageId: {
-                type: Sequelize.INTEGER,
-                primaryKey: true,
-                autoIncrement: true,
-                allowNull: false,
-            },
-            text: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            senderId: {
-                type: Sequelize.STRING,
-                allowNull: false,
-            },
-            createdAt: {
-                type: Sequelize.DATE,
-                allowNull: false,
-                defaultValue: Sequelize.NOW,
-            },
-            updatedAt: {
-                type: Sequelize.DATE,
-                allowNull: false,
-                defaultValue: Sequelize.NOW,
-            }
+        // Step 1: Add the `displayName` column with default value and no NULLs
+        await queryInterface.addColumn('Users', 'displayName', {
+            type: Sequelize.STRING,
+            allowNull: false,  // Ensures the column cannot have NULL values
+            defaultValue: 'Anonymous',  // Sets default value for existing records
         });
+
+        // Step 2: Ensure no NULL values exist for `displayName` in existing records
+        await queryInterface.sequelize.query(`
+      UPDATE "Users"
+      SET "displayName" = 'Anonymous'
+      WHERE "displayName" IS NULL;
+    `);
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('Messages');
+        // Rollback logic: Remove the `displayName` column
+        await queryInterface.removeColumn('Users', 'displayName');
     }
 };

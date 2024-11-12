@@ -16,7 +16,32 @@ const getExistingUsers = async (req, res) => {
     }
 };
 
-const findUser = async (req, res) => {
+const getUserInfo = async (req, res) => {
+    try {
+
+        // Access user id from the URL parameters (e.g. /users/:id)
+        const { id } = req.params;
+
+        // Fetch the user from the database
+        const user = await User.findByPk(id);
+
+        // If the user is not found, return a 404 error
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Return the user info with a 200 status code
+        return res.status(200).json({ user });
+
+    } catch (error) {
+        console.error("Error getting user info:", error);
+
+        // Send a 500 error response with a generic message
+        return res.status(500).json({ error: "Error getting user info" });
+    }
+};
+
+const getUserFriend = async (req, res) => {
 
     try {
 
@@ -24,20 +49,15 @@ const findUser = async (req, res) => {
 
         const user = User.findByPk(userId);
 
-        //TODO::
-        //This route could potentially return a user's chatlogs with another.
-
         if (user) {
             console.log("Found user.");
             return res.status(200).json("User was found.", user);
-        } else {
-            console.log("Error finding user: ", error);
-            return res.status(404).json("Error finding user.", { error: "User is not in DB." });
         }
 
     } catch (error) {
         console.log("Error finding user: ", error);
         return res.status(400).json("Error finding user.", { error: error.message });
+
     }
 };
 
@@ -118,4 +138,34 @@ const joinEvent = async (req, res) => {
     }
 };
 
-export { getExistingUsers, findUser, addFriend, getFriends, joinEvent };
+const setDisplayName = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { displayName } = req.body;
+
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        //Update user's displayname in DB
+        user.displayName = displayName;
+
+        await user.save();
+
+        return res.status(200).json({ message: 'Display name updated successfully', user });
+
+
+    } catch (error) {
+        console.error("Error joining event:", error);
+
+        return res.status(400).json("Error joining event.", error.message);
+
+    }
+};
+
+
+export { getExistingUsers, getUserInfo, getUserFriend, setDisplayName, addFriend, getFriends, joinEvent };
