@@ -88,7 +88,7 @@ const EventForm = () => {
                     className={`fixed bottom-24 right-5 w-72 p-6 bg-white rounded-lg shadow-xl z-40 transition-all transform ${formShrink ? 'scale-100 opacity-100' : 'scale-100 opacity-100'}`}
                     style={{ transition: 'transform 0.3s ease-out, opacity 0.3s ease-out' }}
                 >
-                    <h3 className="text-lg text-gray-700 font-semibold mb-4">Create Event</h3>
+                    <h3 className="text-lg text-gray-700font-semibold mb-4">Create Event</h3>
 
                     {error && <div className="text-red-500 mb-4">{error}</div>}
                     {success && <div className="text-green-500 mb-4">{success}</div>}

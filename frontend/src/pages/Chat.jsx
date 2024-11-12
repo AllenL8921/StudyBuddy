@@ -84,12 +84,11 @@ const Chat = () => {
     }, [roomId]);
 
     const sendMessage = async (e) => {
-        e.preventDefault();  // Prevent default form submission
+        e.preventDefault();
 
-        // Prevent double sending if the message is already being sent or the input is empty
-        if (isSending || !message.trim()) return;  // Only proceed if message is not empty and not already sending
+        if (isSending || !message.trim()) return;
 
-        setIsSending(true); // Set sending state to true to block multiple submissions
+        setIsSending(true);
 
         const msgData = { roomId: roomId, senderId: user.id, text: message.trim() };
         console.log("Sending message:", msgData);
@@ -101,7 +100,10 @@ const Chat = () => {
             if (response.status === 'success') {
                 console.log("Message sent successfully:", response.message);
 
-                // Prevent adding the same message twice
+                // Prevent sending same message twice
+                // could be caused by react rerendering
+                // current fix is having messaged be saved in an array
+
                 setMessages((prevMessages) => {
                     if (!prevMessages.some((msg) => msg.messageId === response.message.messageId)) {
                         return [...prevMessages, response.message];
@@ -133,7 +135,7 @@ const Chat = () => {
                     <div className="flex-grow border-t border-gray-300 p-4 overflow-y-auto">
                         {messages.map((msg, index) => (
                             <p key={index} className="mb-2">
-                                <strong className="text-indigo-600">{msg.senderId}:</strong> {msg.text}
+                                <strong className="text-indigo-600">{displayName}:</strong> {msg.text}
                             </p>
                         ))}
                     </div>
@@ -150,7 +152,7 @@ const Chat = () => {
                         <button
                             type="submit"
                             className="bg-indigo-500 text-white px-4 py-2 rounded-r-md hover:bg-indigo-600"
-                            disabled={isSending} // Disable button while sending
+                            disabled={isSending}
                         >
                             {isSending ? 'Sending...' : 'Send'}
                         </button>
