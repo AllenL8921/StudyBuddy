@@ -7,7 +7,10 @@ const { User, Event, Attribute } = db;
 const createEvent = async (req, res) => {
 
     try {
-        const { organizerId, title, date, chatRoomId, description, tags } = req.body;
+
+        const { organizerId, title, date, chatRoomId, description, attributeId } = req.body;
+
+        console.log("Received: ", req.body);
 
         //Search if organizer exists in userId
 
@@ -34,10 +37,12 @@ const createEvent = async (req, res) => {
         await newEvent.setAttendees(organizer);
 
         //Query the tags associated
-        if (tags && tags.length > 0) {
+        if (attributeId) {
+
+            console.log(attributeId);
             // tags is an array of attributeIds
             const tagInstances = await Attribute.findAll({
-                where: { attributeId: tags },
+                where: { attributeId: attributeId },
             })
 
             //  'setTags' comes from `belongsToMany`
