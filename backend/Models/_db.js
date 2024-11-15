@@ -1,8 +1,10 @@
-import { readdirSync } from 'fs'; // Changed from 'node:fs' to 'fs'
-import { basename, dirname } from 'path'; // Changed from 'node:path' to 'path'
-import { fileURLToPath } from 'url'; // Changed from 'node:url' to 'url'
-import { Sequelize, DataTypes } from 'sequelize';
+import dotenv from 'dotenv';
+dotenv.config();
 
+import { readdirSync } from 'fs';
+import { basename, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { Sequelize, DataTypes } from 'sequelize';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 

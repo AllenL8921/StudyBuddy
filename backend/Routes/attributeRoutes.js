@@ -1,21 +1,11 @@
-//attributeRoutes.js
 import express from 'express';
 
-//Import model
-import attributesModel from "../Models/attribute.model";
-
 //Import functionality
+import { getAllAttributes } from '../Controllers/attributeController.js';
 
-const router = express.router();
+const router = express.Router();
 
 //Define Routes
-
-//POST 
-
-router.post()
-
-//GET 
-
-router.get();
+router.get('/', getAllAttributes);
 
 export default router;

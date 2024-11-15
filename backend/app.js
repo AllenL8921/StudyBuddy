@@ -5,13 +5,12 @@ import { Server } from 'socket.io';
 import { sequelize } from "./Models/_db.js";
 import process from "node:process";
 import db from './Models/_db.js';
-import 'dotenv/config';
-
 // Import routers
 import userRouter from './Routes/userRoutes.js';
 import webRouter from './Routes/webhookRoutes.js';
 import messageRouter from './Routes/messageRoutes.js';
 import eventRouter from './Routes/eventRoutes.js';
+import attributeRouter from './Routes/attributeRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -40,6 +39,7 @@ app.use("/api/users", userRouter);
 app.use("/api/webhooks", webRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/events", eventRouter);
+app.use("/api/attributes", attributeRouter);
 
 // Start the server and authenticate the database connection
 const startServer = async () => {
