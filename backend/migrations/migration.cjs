@@ -1,24 +1,31 @@
 'use strict';
 
 module.exports = {
-    up: async (queryInterface, Sequelize) => {
-        // Step 1: Add the `displayName` column with default value and no NULLs
-        await queryInterface.addColumn('Users', 'displayName', {
+    async up(queryInterface, Sequelize) {
+        // Step 1: Add the new column 'senderDisplayName' with NULL values allowed
+        await queryInterface.addColumn('Messages', 'senderDisplayName', {
             type: Sequelize.STRING,
-            allowNull: false,  // Ensures the column cannot have NULL values
-            defaultValue: 'Anonymous',  // Sets default value for existing records
+            allowNull: true,  // Allow NULL values temporarily
         });
 
-        // Step 2: Ensure no NULL values exist for `displayName` in existing records
-        await queryInterface.sequelize.query(`
-      UPDATE "Users"
-      SET "displayName" = 'Anonymous'
-      WHERE "displayName" IS NULL;
-    `);
+        // Step 2: Update existing rows with a default value for 'senderDisplayName'
+        // You may want to set a default display name, or populate it based on existing data.
+        // For example, we'll set the 'senderDisplayName' to an empty string, but this could be
+        // set to any default value or based on another column if appropriate.
+
+        await queryInterface.sequelize.query(
+            `UPDATE "Messages" SET "senderDisplayName" = 'Default Display Name' WHERE "senderDisplayName" IS NULL`
+        );
+
+        // Step 3: If you want to set the column as NOT NULL after updating existing data, you can use:
+        await queryInterface.changeColumn('Messages', 'senderDisplayName', {
+            type: Sequelize.STRING,
+            allowNull: false,  // Set as NOT NULL after ensuring data is populated
+        });
     },
 
-    down: async (queryInterface, Sequelize) => {
-        // Rollback logic: Remove the `displayName` column
-        await queryInterface.removeColumn('Users', 'displayName');
+    async down(queryInterface, Sequelize) {
+        // Step 1: In the down migration, you should remove the column.
+        await queryInterface.removeColumn('Messages', 'senderDisplayName');
     }
 };

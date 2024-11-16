@@ -20,13 +20,17 @@ export default (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        displayName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW, // automatically sets creation time
+            defaultValue: DataTypes.NOW,
         },
     }, {
-        timestamps: false, // Disable automatic `updatedAt` and `createdAt` columns if not needed
+        timestamps: false,
     });
 
     // Define associations

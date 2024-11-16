@@ -65,6 +65,7 @@ const startServer = async () => {
           const newMessage = await db.Message.create({
             roomId: data.roomId,
             senderId: data.senderId,
+            displayName: data.displayName,
             text: data.text,
           });
 
