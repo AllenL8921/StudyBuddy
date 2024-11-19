@@ -16,6 +16,10 @@ export default (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        users: {
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: false,
+        },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,

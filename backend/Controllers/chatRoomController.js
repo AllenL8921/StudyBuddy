@@ -1,12 +1,13 @@
 //chatRoomController.js
 
 //Import model
-import db from "../Models/_db";
+import db from "../Models/_db.js";
+import { Op } from 'sequelize';
 const { ChatRoom } = db;
 
 const createChatRoom = async (req, res) => {
 
-    const { roomId, name, description } = req.body;
+    const { roomId, name, users, description } = req.body;
 
     try {
 
@@ -14,6 +15,7 @@ const createChatRoom = async (req, res) => {
         const newChatRoom = await ChatRoom.create({
             roomId,
             name,
+            users,
             description,
         });
 
@@ -29,17 +31,20 @@ const createChatRoom = async (req, res) => {
     }
 };
 
-const getChatRoomBYId = async (req, res) => {
-    const { id } = req.params;
+const getChatRoomByUserId = async (req, res) => {
+    const { userId } = req.params;
+    console.log(userId)
     try {
-        const room = await ChatRoom.findOne({
-            where: { roomID: id }
+        const rooms = await ChatRoom.findAll({
+            where: {
+                users: { [Op.contains]: [userId] }
+            }
         });
-
-        if (!room) {
+        console.log("getChatRoomByUserId: ", rooms)
+        if (!rooms) {
             return res.status(404).json({ error: "Chat Room Not Found" })
         }
-        return res.status(200).json(room);
+        return res.status(200).json(rooms);
 
     } catch (error) {
         console.log(error)
@@ -48,4 +53,4 @@ const getChatRoomBYId = async (req, res) => {
 };
 
 
-export { createChatRoom, getChatRoomBYId };
+export { createChatRoom, getChatRoomByUserId };

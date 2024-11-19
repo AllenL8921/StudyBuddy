@@ -11,6 +11,7 @@ import webRouter from './Routes/webhookRoutes.js';
 import messageRouter from './Routes/messageRoutes.js';
 import eventRouter from './Routes/eventRoutes.js';
 import attributeRouter from './Routes/attributeRoutes.js';
+import chatRoomRouter from './Routes/chatRoomRoutes.js'
 
 const app = express();
 app.use(express.json());
@@ -40,6 +41,7 @@ app.use("/api/webhooks", webRouter);
 app.use("/api/message", messageRouter);
 app.use("/api/events", eventRouter);
 app.use("/api/attributes", attributeRouter);
+app.use("/api/chatRooms", chatRoomRouter)
 
 // Start the server and authenticate the database connection
 const startServer = async () => {

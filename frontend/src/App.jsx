@@ -7,13 +7,13 @@ import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 // Pages Imports
 import Home from "./pages/HomePage";
-import Chat from "./pages/Chat";
 import DashBoard from './pages/Dashboard';
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import StudySession from './pages/StudySession';
 import EventList from './pages/EventList';
 import AboutUsPage from './pages/AboutUsPage';
+import ChatList from './pages/ChatList';
 import StudyRoom from './pages/StudyRoom';
 
 // ProtectedRoute
@@ -40,7 +40,7 @@ function App() {
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<SignInPage />} />
         <Route path="/studyroom" element={<StudyRoom />} />
-        <Route path="/chat" element={<ProtectedRoute element={<Chat />} />} /> {/* Protect this route */}
+        <Route path="/chat" element={<ProtectedRoute element={<ChatList />} />} /> {/* Protect this route */}
         <Route path="/dashboard" element={<ProtectedRoute element={<DashBoard />} />} /> {/* Protect this route */}
       </Routes>
     </>

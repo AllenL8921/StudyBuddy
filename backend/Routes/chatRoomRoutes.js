@@ -1,13 +1,13 @@
 import express from 'express';
 
-import { createChatRoom, getChatRoomBYId } from '../Controllers/chatRoomController';
+import { createChatRoom, getChatRoomByUserId } from '../Controllers/chatRoomController.js';
 
 const router = express.Router();
 
 //POST
-router.post('/chatRoom', createChatRoom);
+router.post('/', createChatRoom);
 
 //GET
-router.get('/chatRoom/:id', getChatRoomBYId);
+router.get('/:userId', getChatRoomByUserId);
 
 export default router;

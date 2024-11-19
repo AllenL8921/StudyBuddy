@@ -58,9 +58,7 @@ const UserProfile = React.memo(({
         )}
     </div>
 ));
-
 UserProfile.displayName = 'UserProfile';
-
 UserProfile.propTypes = {
     userInfo: PropTypes.shape({
         imageUrl: PropTypes.string,
@@ -73,7 +71,6 @@ UserProfile.propTypes = {
     newDisplayName: PropTypes.string.isRequired,
     setNewDisplayName: PropTypes.func.isRequired,
 };
-
 const Dashboard = () => {
     //User states
     const { isSignedIn, user } = useUser();
