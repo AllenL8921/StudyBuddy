@@ -47,6 +47,7 @@ const EventList = () => {
         } catch (error) {
             console.error('Error fetching events:', error);
         } finally {
+            console.log(events);
             setLoading(false); // Set loading to false after fetching
         }
     };
@@ -73,12 +74,18 @@ const EventList = () => {
             {/*Add a searchbar component here*/}
 
             <div className="flex min-h-screen">
-                {/* Main Content */}
+                {/* Main Content 
+                
+                    Button to display random events and your events
+                
+                */}
+
                 <div className="container ml-[280px] mt-20 py-24">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {events.map((event) => (
                             <EventCard
-                                key={event.id}
+                                key={event.eventId}
+                                eventId={event.eventId}
                                 title={event.title}
                                 date={event.date}
                                 description={event.description}
@@ -95,7 +102,7 @@ const EventList = () => {
                 </div>
 
                 {/* Event Creation Button */}
-                <div className="fixed bottom-5 right-5 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
+                <div className="fixed bottom-5 right-5 bg-blue-600 p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
                     <EventCreate></EventCreate>
                 </div>
             </div>

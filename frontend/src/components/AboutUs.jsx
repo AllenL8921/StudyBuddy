@@ -16,10 +16,7 @@ export default function AboutUs() {
                         What is StudyBuddy?
                     </h1>
                     <p className="text-gray-700 text-lg font-poppins mb-8">
-                        As students and lifelong learners, we have all felt lost in a classroom before.
-                        In today’s fast-paced environment, it becomes harder to keep up with course material or find the time to learn new skills.
-                        The increasing demands on students’ time, coupled with distractions from social media, make it crucial to create effective support systems.
-                        Our team aims to develop a platform for students to study together and find study buddies, whether in school or learning new skills.
+                        A platform for students to study together and find study buddies, whether in school or learning new skills.
                         This platform will facilitate both in-person and virtual study sessions, enabling users to connect and share resources.
                     </p>
                 </div>

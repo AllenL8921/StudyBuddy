@@ -1,7 +1,10 @@
-import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useUser } from '@clerk/clerk-react';
+
+//Import Components
+import Sidebar from "../components/Sidebar";
+import Whiteboard from '../components/Whiteboard';
 
 // Initialize the socket connection
 const socket = io("http://localhost:8080");
@@ -90,7 +93,7 @@ const Chat = () => {
 
         setIsSending(true);
 
-        const msgData = { roomId: roomId, senderId: user.id, text: message.trim() };
+        const msgData = { roomId: roomId, senderId: user.id, displayName: displayName, text: message.trim() };
         console.log("Sending message:", msgData);
 
         socket.emit('chatMessage', msgData, (response) => {
@@ -135,7 +138,7 @@ const Chat = () => {
                     <div className="flex-grow border-t border-gray-300 p-4 overflow-y-auto">
                         {messages.map((msg, index) => (
                             <p key={index} className="mb-2">
-                                <strong className="text-indigo-600">{displayName}:</strong> {msg.text}
+                                <strong className="text-indigo-600">{msg.displayName}:</strong> {msg.text}
                             </p>
                         ))}
                     </div>
@@ -162,10 +165,8 @@ const Chat = () => {
                 {/* Right Column (1/3 of screen width) */}
                 <div className="w-1/3 bg-gray-100 p-4">
                     <h2 className="text-xl font-semibold mb-4">User Info / Settings</h2>
-                    {/* Add any content or widgets here for the right column */}
                     <div className="mb-4">
                         <p className="text-sm">Username: {user ? displayName : "Guest"}</p>
-                        {/* You can add more information about the user or settings here */}
                     </div>
                 </div>
             </div>

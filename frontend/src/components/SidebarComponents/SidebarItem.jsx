@@ -1,3 +1,6 @@
+//SidebarItem.jsx
+
+//This component controls how each of the items in the sidebar are rendered
 
 const SidebarItem = ({ name, href, isActive }) => {
     return (

@@ -14,6 +14,7 @@ import SignUpPage from "./pages/SignUpPage";
 import StudySession from './pages/StudySession';
 import EventList from './pages/EventList';
 import AboutUsPage from './pages/AboutUsPage';
+import StudyRoom from './pages/StudyRoom';
 
 // ProtectedRoute
 // Any route that is protected REQUIRES you to be signed in and can't be accessed without being signed in
@@ -38,6 +39,7 @@ function App() {
         <Route path="/events" element={<EventList />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<SignInPage />} />
+        <Route path="/studyroom" element={<StudyRoom />} />
         <Route path="/chat" element={<ProtectedRoute element={<Chat />} />} /> {/* Protect this route */}
         <Route path="/dashboard" element={<ProtectedRoute element={<DashBoard />} />} /> {/* Protect this route */}
       </Routes>
