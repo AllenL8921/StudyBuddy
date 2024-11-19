@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import Sidebar from '../components/Sidebar';
+import PropTypes from 'prop-types';
 
 // Memoize the UserProfile component to avoid unnecessary re-renders
 const UserProfile = React.memo(({
@@ -57,7 +58,19 @@ const UserProfile = React.memo(({
         )}
     </div>
 ));
-
+UserProfile.displayName = 'UserProfile';
+UserProfile.propTypes = {
+    userInfo: PropTypes.shape({
+        imageUrl: PropTypes.string,
+        username: PropTypes.string,
+        id: PropTypes.string,
+    }).isRequired,
+    isFormOpen: PropTypes.bool.isRequired,
+    setIsFormOpen: PropTypes.func.isRequired,
+    handleDisplayNameChange: PropTypes.func.isRequired,
+    newDisplayName: PropTypes.string.isRequired,
+    setNewDisplayName: PropTypes.func.isRequired,
+}; 
 const Dashboard = () => {
     //User states
     const { isSignedIn, user } = useUser();

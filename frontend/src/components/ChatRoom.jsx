@@ -1,4 +1,4 @@
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useUser } from '@clerk/clerk-react';
@@ -6,7 +6,7 @@ import { useUser } from '@clerk/clerk-react';
 // Initialize the socket connection
 const socket = io("http://localhost:8080");
 
-const Chat = () => {
+const ChatRoom = ({ roomId }) => {
     //UserData
     const { isSignedIn, user } = useUser();
     const [displayName, setDisplayName] = useState('');
@@ -15,7 +15,7 @@ const Chat = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [isSending, setIsSending] = useState(false); // Track sending state
-    const roomId = 123;
+    // const roomId = 123;
 
     useEffect(() => {
 
@@ -81,7 +81,7 @@ const Chat = () => {
         return () => {
             socket.off('chatMessage');
         };
-    }, [roomId]);
+    }, [roomId, user.id]);
 
     const sendMessage = async (e) => {
         e.preventDefault();
@@ -120,10 +120,6 @@ const Chat = () => {
 
     return (
         <div className="flex h-screen">
-            {/* Sidebar */}
-            <div className="w-1/4 bg-gray-200 overflow-y-auto">
-                <Sidebar />
-            </div>
 
             {/* Main Content (Chat area + Right Column) */}
             <div className="flex-grow flex">
@@ -135,7 +131,7 @@ const Chat = () => {
                     <div className="flex-grow border-t border-gray-300 p-4 overflow-y-auto">
                         {messages.map((msg, index) => (
                             <p key={index} className="mb-2">
-                                <strong className="text-indigo-600">{displayName}:</strong> {msg.text}
+                                <strong className="text-indigo-600">{msg.displayName}:</strong> {msg.text}
                             </p>
                         ))}
                     </div>
@@ -173,4 +169,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default ChatRoom;
