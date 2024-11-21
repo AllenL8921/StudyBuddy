@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createChatRoom, getChatRoomByUserId } from '../Controllers/chatRoomController.js';
+import { createChatRoom, getAllChatRoom, getChatRoomByUserId } from '../Controllers/chatRoomController.js';
 
 const router = express.Router();
 
@@ -8,6 +8,7 @@ const router = express.Router();
 router.post('/', createChatRoom);
 
 //GET
+router.get('/', getAllChatRoom);
 router.get('/:userId', getChatRoomByUserId);
 
 export default router;

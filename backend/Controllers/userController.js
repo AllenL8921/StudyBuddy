@@ -188,5 +188,34 @@ const setDisplayName = async (req, res) => {
     }
 };
 
+const getChatRoomByUserId = async (req, res) => {
 
-export { getExistingUsers, getUserInfo, getUserFriend, setDisplayName, addFriend, getFriends, joinEvent };
+    const { userId } = req.params;
+    console.log(userId)
+
+    try {
+        //Look for all chatrooms that the user is in
+
+        const chatRooms = await ChatRoom.findAll({
+            include: {
+                model: User,
+                as: 'Participants',
+                where: { clerkUserId: userId },
+                required: true,
+            }
+        });
+
+        console.log("getChatRoomByUserId: ", chatRooms)
+        if (!chatRooms) {
+            return res.status(404).json({ error: "Chat Room Not Found" })
+        }
+
+        return res.status(200).json(chatRooms);
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ error: error.message })
+    }
+};
+
+export { getExistingUsers, getUserInfo, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinEvent };

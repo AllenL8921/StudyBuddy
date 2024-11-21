@@ -4,8 +4,8 @@
 //
 
 //Import model
+import { where } from "sequelize";
 import db from "../Models/_db.js";
-import { Op } from 'sequelize';
 const { ChatRoom, User } = db;
 
 const createChatRoom = async (req, res) => {
@@ -41,6 +41,26 @@ const createChatRoom = async (req, res) => {
     }
 };
 
+const getAllChatRoom = async (req, res) => {
+    try {
+        const chatRooms = await ChatRoom.findAll({
+            where: {
+                isPublic: true,
+            }
+        });
+
+        return res.status(200).json(chatRooms);
+
+    } catch (error) {
+        console.log("Error getting all chatrooms: ", error);
+
+        return res.status(400).json({
+            error: "Error getting chatrooms.",
+            details: error.message,
+        });
+    }
+};
+
 const getChatRoomByUserId = async (req, res) => {
 
     const { userId } = req.params;
@@ -72,4 +92,4 @@ const getChatRoomByUserId = async (req, res) => {
 };
 
 
-export { createChatRoom, getChatRoomByUserId };
+export { createChatRoom, getAllChatRoom, getChatRoomByUserId };

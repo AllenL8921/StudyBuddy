@@ -88,7 +88,8 @@ const EventList = () => {
                                 date={event.scheduledDate}
                                 description={event.description}
                             />
-                        ))}
+                        ))
+                        }
                     </div>
 
                     {loading && (

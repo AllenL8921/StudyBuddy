@@ -77,7 +77,7 @@ const getAllEvents = async (req, res) => {
         //TODO:: Apply query logic based on page, limit, offset
         const allEvents = await Event.findAll();
 
-        res.status(200).json(allEvents);
+        return res.status(200).json(allEvents);
 
     } catch (error) {
         console.log("Error getting events: ", error);
