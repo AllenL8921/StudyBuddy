@@ -59,7 +59,7 @@ const getChatRoomByUserId = async (req, res) => {
         });
 
         console.log("getChatRoomByUserId: ", chatRooms)
-        if (!rooms) {
+        if (!chatRooms) {
             return res.status(404).json({ error: "Chat Room Not Found" })
         }
 
