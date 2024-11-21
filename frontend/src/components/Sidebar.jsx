@@ -24,7 +24,7 @@ export default function Sidebar() {
   // Show loading message while the user data is being fetched
   if (!isLoaded) {
     return (
-      <div className="fixed top-10 left-0 z-40 w-60 h-screen bg-gray-900 text-white shadow-lg flex justify-center items-center">
+      <div className="fixed left-0 z-40 w-60 h-screen bg-gray-900 text-white shadow-lg flex justify-center items-center">
         <FaSpinner className="animate-spin text-white text-4xl" />
       </div>
     );
@@ -42,7 +42,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-10 left-0 z-40 transition-transform duration-300 ease-in-out 
+        className={`fixed left-0 z-40 transition-transform duration-300 ease-in-out 
         ${isOpen ? 'w-60' : 'w-0'} h-screen bg-gray-900 text-white shadow-lg overflow-hidden`}
       >
         {/* User info and sign-in state check */}

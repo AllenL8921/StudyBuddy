@@ -1,4 +1,4 @@
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { useUser } from '@clerk/clerk-react';

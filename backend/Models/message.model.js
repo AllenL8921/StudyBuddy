@@ -34,14 +34,17 @@ export default (sequelize) => {
     });
 
     // Define associations
-    Message.associate = (models) => {
-        Message.belongsToMany(models.ChatRoom, {
-            through: 'ChatRoomsMessage',  // The join table for the many-to-many relationship
-            as: 'message',                 // Alias for this association
-            foreignKey: 'chatRoomId',  // The foreign key for the ChatRooms table
-            otherKey: 'clerkUserId',    // The foreign key for the User table
-        });
-    };
+    // NOTE:: This assocation might be redundant seeing that the messages table holds every data that is needed
+    // Each message already knows which chatroom and sender it belongs to
+
+    // Message.associate = (models) => {
+    //     Message.belongsToMany(models.ChatRoom, {
+    //         through: 'ChatRoomsMessage',  // The join table for the many-to-many relationship
+    //         as: 'message',                 // Alias for this association
+    //         foreignKey: 'chatRoomId',  // The foreign key for the ChatRooms table
+    //         otherKey: 'clerkUserId',    // The foreign key for the User table
+    //     });
+    // };
 
     return Message;
 };

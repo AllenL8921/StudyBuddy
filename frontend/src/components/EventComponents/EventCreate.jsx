@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaCalendarPlus } from 'react-icons/fa';
 import { useUser } from '@clerk/clerk-react'; // Assuming you have a custom hook for user data
-import AttributesDropDown from './AttributesDropDown';
+import AttributesDropDown from '../AttributesDropDown';
 
 const EventForm = () => {
     const { user } = useUser();

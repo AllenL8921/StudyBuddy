@@ -8,7 +8,15 @@ export default (sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        name: {
+        isPublic: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        },
+        roomName: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        persistenceKey: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -16,26 +24,27 @@ export default (sequelize) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        users: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-            allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-            allowNull: false,
-            defaultValue: DataTypes.NOW,
-        },
+
     }, {
-        timestamps: false,
+        timestamps: true,
     });
 
     // Define associations
+    //
+
     ChatRoom.associate = (models) => {
         ChatRoom.belongsToMany(models.User, {
             through: 'UserChatRooms',  // The join table for the many-to-many relationship
             as: 'Participants',                 // alias for this association
-            foreignKey: 'chatRoomId',  // The foreign key for the ChatRooms table
+            foreignKey: 'roomId',  // The foreign key for the ChatRooms table
             otherKey: 'clerkUserId',    // The foreign key for the User table
+        });
+
+        ChatRoom.belongsToMany(models.Attribute, {
+            through: "ChatRoomAttributes",
+            as: "Tags",
+            foreignKey: "roomId",
+            otherKey: "attributeId",
         });
     };
 

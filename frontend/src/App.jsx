@@ -30,7 +30,6 @@ function App() {
 
   return (
     <>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/home" />} /> {/* Redirect to home on root */}
         <Route path="/aboutus" element={<AboutUsPage />} />

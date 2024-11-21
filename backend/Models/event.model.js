@@ -19,7 +19,7 @@ export default (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        date: {
+        scheduledDate: {
             type: DataTypes.DATE,
             allowNull: true,
         },

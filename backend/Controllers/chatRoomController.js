@@ -1,5 +1,8 @@
 //chatRoomController.js
 
+//Study Sessions are chatrooms
+//
+
 //Import model
 import db from "../Models/_db.js";
 import { Op } from 'sequelize';
@@ -7,17 +10,24 @@ const { ChatRoom } = db;
 
 const createChatRoom = async (req, res) => {
 
-    const { roomId, name, users, description } = req.body;
-
     try {
+
+        const { name, organizerId, description } = req.body;
+
+        //Validate form data
+
 
         //Create the chatroom object
         const newChatRoom = await ChatRoom.create({
             roomId,
             name,
-            users,
             description,
         });
+
+        //Handle associations
+
+
+        return res.status(200).json({ message: "Study Room Created", chatRoom: newChatRoom });
 
     } catch (error) {
         console.error("Error creating chatroom:", error);

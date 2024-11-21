@@ -25,15 +25,12 @@ const StudySession = () => {
     //     setLoading(false);
     // };
 
-
-
     return (
         <>
             <Sidebar />
 
-            <div className="flex">
-                <Searchbar></Searchbar>
-
+            <div className="flex justify-center">
+                <Searchbar />
             </div>
 
 

@@ -5,7 +5,7 @@
 
 //Import Models
 import db from '../Models/_db.js';
-const { User, Event } = db;
+const { User, StudyRoom, Event } = db;
 
 const getExistingUsers = async (req, res) => {
     try {
@@ -125,6 +125,27 @@ const joinEvent = async (req, res) => {
 
         // Find the event from eventId
         const event = Event.findByPk(eventId);
+
+        // Validation checks
+        // 1. User can not join an event that they are currently in
+
+
+
+    } catch (error) {
+        console.error("Error joining event:", error);
+
+        return res.status(400).json("Error joining event.", error.message);
+    }
+};
+
+const joinRoom = async (req, res) => {
+
+    try {
+
+        const { userId, eventId } = req.body;
+
+        // Find the event from eventId
+        const event = StudyRoom.findByPk(eventId);
 
         // Validation checks
         // 1. User can not join an event that they are currently in

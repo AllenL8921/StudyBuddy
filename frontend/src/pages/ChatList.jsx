@@ -1,6 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from "react";
-import ChatRoom from "../components/ChatRoom";
+import Chat from "../components/Chat";
 import { useUser } from "@clerk/clerk-react";
 
 const ChatList = () => {
@@ -35,9 +35,8 @@ const ChatList = () => {
                         {chatRooms.map((room) => (
                             <li
                                 key={room.roomId}
-                                className={`p-2 cursor-pointer ${
-                                    roomId === room.roomId ? "bg-gray-300" : "hover:bg-gray-100"
-                                }`}
+                                className={`p-2 cursor-pointer ${roomId === room.roomId ? "bg-gray-300" : "hover:bg-gray-100"
+                                    }`}
                                 onClick={() => setRoomId(room.roomId)}
                             >
                                 {room.name}
