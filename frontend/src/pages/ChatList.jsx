@@ -17,6 +17,9 @@ const ChatList = () => {
                 if (data) {
                     setChatRooms(data);
                 }
+
+                //Debug
+                console.log(chatRooms);
             } catch (error) {
                 console.error("Error fetching chat rooms:", error);
             }

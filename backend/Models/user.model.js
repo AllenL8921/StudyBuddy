@@ -62,8 +62,16 @@ export default (sequelize) => {
         User.belongsToMany(models.Event, {
             through: 'EventUsers',
             as: 'Events',
-            foreignKey: 'userId',
+            foreignKey: 'clerkUserId',
             otherKey: 'eventId',
+            onDelete: 'CASCADE',
+        });
+
+        User.belongsToMany(models.ChatRoom, {
+            through: 'UserChatRooms',
+            as: 'Participants',
+            foreignKey: 'clerkUserId',
+            otherKey: 'roomId',
             onDelete: 'CASCADE',
         });
     };

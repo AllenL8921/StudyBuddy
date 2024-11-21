@@ -6,7 +6,7 @@
 //Import model
 import db from "../Models/_db.js";
 import { Op } from 'sequelize';
-const { ChatRoom } = db;
+const { ChatRoom, User } = db;
 
 const createChatRoom = async (req, res) => {
 
@@ -42,19 +42,28 @@ const createChatRoom = async (req, res) => {
 };
 
 const getChatRoomByUserId = async (req, res) => {
+
     const { userId } = req.params;
     console.log(userId)
+
     try {
-        const rooms = await ChatRoom.findAll({
-            where: {
-                users: { [Op.contains]: [userId] }
+        //Look for all chatrooms that the user is in
+
+        const chatRooms = await ChatRoom.findAll({
+            include: {
+                model: User,
+                as: 'Participants',
+                where: { clerkUserId: userId },
+                required: true,
             }
         });
-        console.log("getChatRoomByUserId: ", rooms)
+
+        console.log("getChatRoomByUserId: ", chatRooms)
         if (!rooms) {
             return res.status(404).json({ error: "Chat Room Not Found" })
         }
-        return res.status(200).json(rooms);
+
+        return res.status(200).json(chatRooms);
 
     } catch (error) {
         console.log(error)

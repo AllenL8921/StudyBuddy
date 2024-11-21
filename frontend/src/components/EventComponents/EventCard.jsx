@@ -2,26 +2,32 @@ import React, { useState, useEffect } from 'react';
 
 export default function EventCard({ eventId, title, date, description }) {
 
-    const [formattedDate, setFormattedData] = useState('');
-
+    const [formattedDate, setFormattedDate] = useState('');
 
     useEffect(() => {
+        const formatDate = () => {
+            if (!date) {
+                setFormattedDate('No date available');
+                return;
+            }
 
-        const formatData = async () => {
-            try {
-                const formatted = new Date(date).toLocaleDateString();
-                setFormattedData(formatted);
-            } catch (error) {
-                console.error("Error formatting date:", error);
+            const formattedDateString = date.replace(' ', 'T');
+
+            const parsedDate = new Date(formattedDateString);
+
+            if (isNaN(parsedDate)) {
+                setFormattedDate('Invalid date');
+            } else {
+                const formatted = parsedDate.toLocaleDateString();
+                setFormattedDate(formatted);
             }
         };
-        formatData();
+
+        formatDate();
     }, [date]);
 
-
-
     const handleButton = () => {
-
+        // Handle join event logic
     };
 
     return (

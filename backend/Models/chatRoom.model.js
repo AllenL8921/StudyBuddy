@@ -38,6 +38,7 @@ export default (sequelize) => {
             as: 'Participants',                 // alias for this association
             foreignKey: 'roomId',  // The foreign key for the ChatRooms table
             otherKey: 'clerkUserId',    // The foreign key for the User table
+            onDelete: 'CASCADE',
         });
 
         ChatRoom.belongsToMany(models.Attribute, {
@@ -45,6 +46,7 @@ export default (sequelize) => {
             as: "Tags",
             foreignKey: "roomId",
             otherKey: "attributeId",
+            onDelete: 'CASCADE',
         });
     };
 

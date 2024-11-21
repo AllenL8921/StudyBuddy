@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { FaCalendarPlus } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 // Import Components
-import EventCreate from '../components/EventCreate';
-import EventCard from '../components/EventCard';
+import EventCreate from '../components/EventComponents/EventCreate';
+import EventCard from '../components/EventComponents/EventCard';
 import Sidebar from '../components/Sidebar';
 
 const EventList = () => {
@@ -87,7 +85,7 @@ const EventList = () => {
                                 key={event.eventId}
                                 eventId={event.eventId}
                                 title={event.title}
-                                date={event.date}
+                                date={event.scheduledDate}
                                 description={event.description}
                             />
                         ))}

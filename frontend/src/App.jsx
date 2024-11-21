@@ -10,7 +10,7 @@ import Home from "./pages/HomePage";
 import DashBoard from './pages/Dashboard';
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import StudySession from './pages/StudySession';
+import StudySessionList from './pages/StudySessionList';
 import EventList from './pages/EventList';
 import AboutUsPage from './pages/AboutUsPage';
 import ChatList from './pages/ChatList';
@@ -34,7 +34,7 @@ function App() {
         <Route path="/" element={<Navigate to="/home" />} /> {/* Redirect to home on root */}
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/sessions" element={<StudySession />} />
+        <Route path="/sessions" element={<StudySessionList />} />
         <Route path="/events" element={<EventList />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<SignInPage />} />

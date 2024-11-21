@@ -50,7 +50,6 @@ const createEvent = async (req, res) => {
             await newEvent.setTags(tagInstances);
         }
 
-
         return res.status(201).json({
             message: "Event created sucessfully.",
             event: newEvent,
