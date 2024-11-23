@@ -1,14 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../assets/StudyTogetherIcon.png';
 import { UserButton, useAuth } from '@clerk/clerk-react';
 
 const Navbar = () => {
   const { isSignedIn } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // state for toggling the mobile menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolling, setScrolling] = useState(false); // To handle navbar style change on scroll
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="bg-gray-800 p-4 z-50 fixed w-full shadow-md">
+    <nav
+      className={`bg-gray-800 p-4 z-50 fixed w-full shadow-md transition-all ${scrolling ? 'bg-gray-900' : ''
+        }`}
+    >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo and brand */}
         <div className="flex items-center">

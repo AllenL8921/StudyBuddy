@@ -2,13 +2,13 @@
 
 //Import models
 import db from "../Models/_db.js";
-const { User, Event, Attribute } = db;
+const { User, ChatRoom, Event, Attribute } = db;
 
 const createEvent = async (req, res) => {
 
     try {
 
-        const { organizerId, title, date, chatRoomId, description, attributeId } = req.body;
+        const { organizerId, title, date, description, attributeId } = req.body;
 
         console.log("Received: ", req.body);
 
@@ -24,11 +24,15 @@ const createEvent = async (req, res) => {
         //Create the event object
         // These are attributes needs to be defined in the request
 
+        //Create a new ChatRoom
+        const newChatRoom = await ChatRoom.create().roomId;
+
+
         const newEvent = await Event.create({
             organizerId,
             title,
             date,
-            chatRoomId,
+            newChatRoom,
             description,
         });
 

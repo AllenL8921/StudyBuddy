@@ -4,33 +4,16 @@ import { DataTypes } from 'sequelize';
 export default (sequelize) => {
     const ChatRoom = sequelize.define('ChatRoom', {
         roomId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4, // UUID for global uniqueness
             primaryKey: true,
-            autoIncrement: true,
-        },
-        isPublic: {
-            type: DataTypes.BOOLEAN,
             allowNull: false,
         },
-        roomName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        persistenceKey: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        description: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-
     }, {
         timestamps: true,
     });
 
     // Define associations
-    //
 
     ChatRoom.associate = (models) => {
         ChatRoom.belongsToMany(models.User, {
@@ -41,13 +24,6 @@ export default (sequelize) => {
             onDelete: 'CASCADE',
         });
 
-        ChatRoom.belongsToMany(models.Attribute, {
-            through: "ChatRoomAttributes",
-            as: "Tags",
-            foreignKey: "roomId",
-            otherKey: "attributeId",
-            onDelete: 'CASCADE',
-        });
     };
 
     return ChatRoom;

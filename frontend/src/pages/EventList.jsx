@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import EventCreate from '../components/EventComponents/EventCreate';
 import EventCard from '../components/EventComponents/EventCard';
 import Sidebar from '../components/Sidebar';
+import Searchbar from '../components/Searchbar';
 
 const EventList = () => {
     const [events, setEvents] = useState([]); // List of events
@@ -17,11 +18,6 @@ const EventList = () => {
 
     const fetchEvents = async (pageNumber) => {
         setLoading(true);
-
-        //Using pagenumbers in our fetch request
-        //Allows us to break our query into "portions"
-        //Where we skip items based on an offset calculated using :
-        //how many items are allowed on a page and the page number
 
         try {
             // Fetch events from the API, passing the page number for pagination
@@ -45,7 +41,6 @@ const EventList = () => {
         } catch (error) {
             console.error('Error fetching events:', error);
         } finally {
-            console.log(events);
             setLoading(false); // Set loading to false after fetching
         }
     };
@@ -69,17 +64,16 @@ const EventList = () => {
     return (
         <>
             <Sidebar />
-            {/*Add a searchbar component here*/}
 
-            <div className="flex min-h-screen">
-                {/* Main Content 
-                
-                    Button to display random events and your events
-                
-                */}
+            {/* Search Bar */}
+            <div className="py-5 w-full px-4 sm:px-8 lg:px-16 xl:px-32">
+                <Searchbar />
+            </div>
 
-                <div className="container ml-[280px] mt-20 py-24">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <div className="min-h-screen flex flex-col items-center bg-gray-100">
+                {/* Events Grid */}
+                <div className="container mt-8 px-4 sm:px-8 lg:px-16 xl:px-32 py-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         {events.map((event) => (
                             <EventCard
                                 key={event.eventId}
@@ -88,21 +82,22 @@ const EventList = () => {
                                 date={event.scheduledDate}
                                 description={event.description}
                             />
-                        ))
-                        }
+                        ))}
                     </div>
 
+                    {/* Loading Spinner */}
                     {loading && (
-                        <div className="text-center mt-4">
-                            <p>Loading more events...</p>
-                            <div className="spinner-border animate-spin text-blue-500 mt-2"></div>
+                        <div className="flex justify-center items-center mt-6">
+                            <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-t-4 border-blue-500 rounded-full" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
                         </div>
                     )}
                 </div>
 
                 {/* Event Creation Button */}
-                <div className="fixed bottom-5 right-5 bg-blue-600 p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300">
-                    <EventCreate></EventCreate>
+                <div className="fixed bottom-6 right-6">
+                    <EventCreate />
                 </div>
             </div>
         </>

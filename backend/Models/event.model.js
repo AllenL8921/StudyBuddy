@@ -12,8 +12,13 @@ export default (sequelize) => {
             type: DataTypes.STRING,
         },
         chatRoomId: {
-            type: DataTypes.INTEGER,
-            allowNull: true, // An event can begin without an initial chatroom
+            type: DataTypes.UUID,
+            references: {
+                model: 'ChatRooms',  // Foreign key referencing the ChatRoom table
+                key: 'roomId',
+            },
+            allowNull: false,
+            unique: true,
         },
         title: {
             type: DataTypes.STRING,
