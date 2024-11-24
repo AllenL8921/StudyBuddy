@@ -15,6 +15,7 @@ import EventList from './pages/EventList';
 import AboutUsPage from './pages/AboutUsPage';
 import ChatList from './pages/ChatList';
 import StudyRoom from './pages/StudyRoom';
+import FriendList from './pages/FriendList';
 
 // ProtectedRoute
 // Any route that is protected REQUIRES you to be signed in and can't be accessed without being signed in
@@ -36,6 +37,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/sessions" element={<StudySessionList />} />
         <Route path="/events" element={<EventList />} />
+        <Route path="/friends" element={<FriendList />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<SignInPage />} />
         <Route path="/studyroom" element={<StudyRoom />} />
