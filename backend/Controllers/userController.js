@@ -45,13 +45,13 @@ const getUserFriend = async (req, res) => {
 
     try {
 
-        const userId = params.userId;
+        const { userId } = req.params;
 
         const user = User.findByPk(userId);
 
         if (user) {
             console.log("Found user.");
-            return res.status(200).json("User was found.", user);
+            return res.status(200).json({ message: "User was found.", user });
         }
 
     } catch (error) {
@@ -67,20 +67,20 @@ const addFriend = async (req, res) => {
         console.log(`Request to add friend: ${userId} -> ${friendId}`);
 
         if (userId === friendId) {
-            return res.status(422).json({ error: "You can't friend yourself." });
+            return res.status(422).json({ message: "You can't friend yourself." });
         }
 
         const user = await User.findByPk(userId); // This should work if User is defined correctly
         const friend = await User.findByPk(friendId);
 
         if (!user || !friend) {
-            return res.status(404).json({ error: "User or friend not found." });
+            return res.status(404).json({ message: "User or friend not found." });
         }
 
         const existingFriendship = await user.getFriends({ where: { clerkUserId: friendId } });
 
         if (existingFriendship.length > 0) {
-            return res.status(422).json({ error: "Friendship already exists." });
+            return res.status(422).json({ message: "Friendship already exists." });
         }
 
         await user.addFriend(friendId);
@@ -95,7 +95,7 @@ const addFriend = async (req, res) => {
 const getFriends = async (req, res) => {
 
     try {
-        const { userId } = req.body;
+        const { userId } = req.params;
 
         console.log(`Trying to fetch friends of ${userId}`);
 
@@ -109,7 +109,7 @@ const getFriends = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        return res.status(200).json(userWithFriends.friends);
+        return res.status(200).json(userWithFriends.Friends);
 
     } catch (error) {
         console.error(error);
@@ -218,4 +218,29 @@ const getChatRoomByUserId = async (req, res) => {
     }
 };
 
-export { getExistingUsers, getUserInfo, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinEvent };
+const getUserInfoByName = async (req, res) => {
+    try {
+
+        // Access user id from the URL parameters (e.g. /users/:id)
+        const { username } = req.params;
+
+        // Fetch the user from the database
+        const user = await User.findOne({where: {username: username}});
+
+        // If the user is not found, return a 404 error
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Return the user info with a 200 status code
+        return res.status(200).json({ user });
+
+    } catch (error) {
+        console.error("Error getting user info:", error);
+
+        // Send a 500 error response with a generic message
+        return res.status(500).json({ error: "Error getting user info" });
+    }
+};
+
+export { getExistingUsers, getUserInfo, getUserInfoByName, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinEvent };

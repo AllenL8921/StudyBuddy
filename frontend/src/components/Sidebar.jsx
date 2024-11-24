@@ -7,7 +7,7 @@ const navigation = [
   { name: "StudyTogether", href: "/home", icon: <FaHome /> },
   { name: "Study Session", href: "/sessions", icon: <FaUserFriends /> },
   { name: "Event", href: "/events", icon: <FaCalendarAlt /> },
-  { name: "Friends", href: "", icon: <FaUserFriends /> },
+  { name: "Friends", href: "/friends", icon: <FaUserFriends /> },
   { name: "Chat", href: "/chat", icon: <FaComments /> },
 ];
 

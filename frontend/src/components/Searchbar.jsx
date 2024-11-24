@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 
-export default function Searchbar() {
+export default function Searchbar({onSearch}) {
     const [query, setQuery] = useState('');
 
     const handleChange = (e) => {
         setQuery(e.target.value);
     };
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
         console.log('Searching for:', query);
         // You can replace the console.log with an actual search functionality, e.g., API call.
+        if (onSearch) {
+            console.log('On Searching for:', query);
+            await onSearch(query)
+        }
     };
+    
 
     return (
         <div className="flex justify-center items-center p-4">
