@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import Searchbar from "../components/Searchbar";
 import EventCard from "../components/EventComponents/EventCard";
 import StudySessionCreate from "../components/StudySessionComponents/StudySessionCreate";
+import Carousel from "../components/Carousel";
 
 const StudySession = () => {
 
@@ -40,6 +41,7 @@ const StudySession = () => {
     return (
         <>
             <Sidebar />
+            <Carousel />
 
             {/* Search Bar */}
             <div className="py-5 w-full px-4 sm:px-8 lg:px-16 xl:px-32">

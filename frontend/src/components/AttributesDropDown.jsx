@@ -22,7 +22,6 @@ export default function AttributesDropDown({ selectedOption, onSelect }) {
 
             setAttributeList(formattedAttributes);
 
-
         } catch (error) {
             console.error("Error fetching attributes:", error.message);
         }
@@ -31,18 +30,18 @@ export default function AttributesDropDown({ selectedOption, onSelect }) {
     useEffect(() => {
         fetchAttributes();
         console.log(attributeList);
-    }, []);
+    }, []);  // Empty dependency array means this effect runs once when the component mounts
 
     return (
         <div>
             <h2>Select an Attribute</h2>
 
             <Select
+                isMulti           // Allow multiple selection
                 options={attributeList}
                 value={selectedOption}
                 onChange={onSelect}
             />
-
         </div>
     )
 }

@@ -6,10 +6,10 @@ import { FaCalendarPlus } from 'react-icons/fa';
 export default function StudySessionCreate() {
 
     const { user } = useUser();
+
     const [studySessionData, setstudySessionData] = useState({
-        title: '',
+        studySessionName: '',
         isPublic: '',
-        date: '',
         description: '',
         selectedAttribute: null,
     });
@@ -17,13 +17,15 @@ export default function StudySessionCreate() {
     //Form visibility and control
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
+
     const [formShrink, setFormShrink] = useState(false);
     const [isIconVisible, setIsIconVisible] = useState(true);
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEventData({ ...eventData, [name]: value });
+        const { label, value } = e.target;
+        setstudySessionData({ ...setstudySessionData, [label]: value });
     };
 
     const handleIconClick = () => {
@@ -33,6 +35,17 @@ export default function StudySessionCreate() {
     };
 
     const handleSubmit = () => {
+        try {
+            //Make a POST request to the backend API
+
+            //Create session object to be sent
+            const sessionDataToSubmit = {
+                title: studySessionData.studySessionName,
+            };
+
+        } catch (error) {
+
+        }
 
     };
 
@@ -71,20 +84,60 @@ export default function StudySessionCreate() {
 
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-4">
-                                    <label htmlFor="title" className="block text-sm font-medium text-gray-700">Study Session Title</label>
+                                    <label htmlFor="studySessionName" className="block text-sm font-medium text-gray-700">Study Session Name</label>
                                     <input
-                                        id="title"
-                                        name="title"
+                                        id="studySessionName"
+                                        name="studySessionName"
                                         type="text"
-                                        value={studySessionData.title}
+                                        value={studySessionData.studySessionName}
                                         onChange={handleChange}
                                         className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800" // Added text-gray-800 here
                                         required
                                     />
                                 </div>
 
+                                {/*Checkbox for whether it is public/private*/}
+                                <div className="mb-4 flex items-center">
+                                    <input
+                                        id="isPublic"
+                                        name="isPublic"
+                                        type="checkbox"
+                                        checked={studySessionData.isPublic}
+                                        onChange={handleChange}
+                                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                    />
+                                    <label htmlFor="isPublic" className="ml-2 text-sm text-gray-700">Make this session public</label>
+                                </div>
+
+
+                                {/*Study Session Description*/}
+                                <div className="mb-4">
+                                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">Event Description</label>
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        value={studySessionData.description}
+                                        onChange={handleChange}
+                                        className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800" // Added text-gray-800 here
+                                        rows="4"
+                                        required
+                                    />
+                                </div>
+
+                                <button type='submit'
+                                    className='w-full '>
+
+                                </button>
+
 
                             </form>
+
+                            <button
+                                onClick={handleGoBack}
+                                className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                            >
+                                &times;
+                            </button>
                         </div>
 
 

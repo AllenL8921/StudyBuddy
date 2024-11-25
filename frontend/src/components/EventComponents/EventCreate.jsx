@@ -9,9 +9,8 @@ const EventForm = () => {
         title: '',
         date: '',
         description: '',
-        selectedAttribute: null,
+        selectedAttribute: [], // Ensure this is always an array
     });
-
 
     const [loading, setLoading] = useState(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
@@ -22,15 +21,16 @@ const EventForm = () => {
 
     useEffect(() => {
         if (eventData.selectedAttribute) {
-            console.log("Updated attribute tag: ", eventData.selectedAttribute);
+            console.log("Updated attribute tags: ", eventData.selectedAttribute);
         }
     }, [eventData.selectedAttribute]);
 
-    const handleAttributeChange = (selectedOption) => {
-        console.log("Selected Option :", selectedOption);
+    const handleAttributeChange = (selectedOptions) => {
+        console.log("Selected Options: ", selectedOptions);
+        // Ensure selectedAttribute is always an array of selected options
         setEventData(prevData => ({
             ...prevData,
-            selectedAttribute: selectedOption,
+            selectedAttribute: selectedOptions || [],
         }));
     };
 
@@ -46,14 +46,12 @@ const EventForm = () => {
         setSuccess('');
 
         try {
-            //Make a POST request to the backend API
-
-            //Create event object to be sent
+            // Prepare the event data to submit, including an array of attribute IDs
             const eventDataToSubmit = {
                 title: eventData.title,
                 description: eventData.description,
                 date: eventData.date,
-                attributeId: eventData.selectedAttribute?.value,
+                attributeIds: eventData.selectedAttribute.map(attr => attr.value), // Map to extract IDs
                 organizerId: user.id,
             };
 
@@ -72,7 +70,7 @@ const EventForm = () => {
             }
 
             setSuccess('Event created successfully!');
-            setEventData({ title: '', date: '', description: '' });
+            setEventData({ title: '', date: '', description: '', selectedAttribute: [] }); // Clear the form
 
             setIsFormVisible(false);
             setFormShrink(true); // Start shrinking animation
@@ -137,7 +135,7 @@ const EventForm = () => {
                                     type="text"
                                     value={eventData.title}
                                     onChange={handleChange}
-                                    className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800" // Added text-gray-800 here
+                                    className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
                                     required
                                 />
                             </div>
@@ -150,7 +148,7 @@ const EventForm = () => {
                                     type="date"
                                     value={eventData.date}
                                     onChange={handleChange}
-                                    className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800" // Added text-gray-800 here
+                                    className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
                                     required
                                 />
                             </div>
@@ -162,7 +160,7 @@ const EventForm = () => {
                                     name="description"
                                     value={eventData.description}
                                     onChange={handleChange}
-                                    className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800" // Added text-gray-800 here
+                                    className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
                                     rows="4"
                                     required
                                 />

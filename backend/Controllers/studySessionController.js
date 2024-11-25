@@ -8,7 +8,7 @@ const createStudySession = async (req, res) => {
 
     try {
 
-        const { organizerId, studySessionName, description, attributeId } = req.body;
+        const { organizerId, studySessionName, description, attributeIds } = req.body;
 
         console.log("Received: ", req.body);
 
@@ -25,13 +25,16 @@ const createStudySession = async (req, res) => {
         // These are attributes needs to be defined in the request
 
         // Create a new ChatRoom
-        const newChatRoom = await ChatRoom.create().roomId;
+        const newChatRoom = await ChatRoom.create();
+        const roomId = newChatRoom.roomId;
+
+        // Create a unique persistence key
 
 
         const newStudySession = await StudySession.create({
             organizerId,
             studySessionName,
-            newChatRoom,
+            chatRoomId: roomId,
             description,
         });
 
@@ -40,12 +43,12 @@ const createStudySession = async (req, res) => {
         await newEvent.setAttendees(organizer);
 
         //Query the tags associated
-        if (attributeId) {
+        if (attributeIds && attributeIds.length > 0) {
 
             console.log(attributeId);
             // tags is an array of attributeIds
             const tagInstances = await Attribute.findAll({
-                where: { attributeId: attributeId },
+                where: { attributeId: attributeIds, },
             })
 
             //  'setTags' comes from `belongsToMany`
@@ -54,12 +57,12 @@ const createStudySession = async (req, res) => {
         }
 
         return res.status(201).json({
-            message: "Event created sucessfully.",
-            event: newStudySession,
+            message: "Study Session created sucessfully.",
+            studySession: newStudySession,
         });
 
     } catch (error) {
-        console.error("Error creating event:", error);
+        console.error("Error creating Study Session:", error);
 
         return res.status(400).json(
             {

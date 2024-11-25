@@ -5,69 +5,63 @@ import db from "../Models/_db.js";
 const { User, ChatRoom, Event, Attribute } = db;
 
 const createEvent = async (req, res) => {
-
     try {
-
-        const { organizerId, title, date, description, attributeId } = req.body;
+        const { organizerId, title, date, description, attributeIds } = req.body;
 
         console.log("Received: ", req.body);
 
-        //Search if organizer exists in userId
-
+        // Search if organizer exists in userId
         const organizer = await User.findByPk(organizerId);
 
         if (!organizer) {
-            //User was not found
             return res.status(404).json({ error: "Organizer was not found." });
         }
 
-        //Create the event object
-        // These are attributes needs to be defined in the request
+        // Create a new ChatRoom
+        const newChatRoom = await ChatRoom.create();
+        const roomId = newChatRoom.roomId;
 
-        //Create a new ChatRoom
-        const newChatRoom = await ChatRoom.create().roomId;
-
-
+        // Create the event object
         const newEvent = await Event.create({
             organizerId,
             title,
-            date,
-            newChatRoom,
+            scheduledDate: date,
+            chatRoomId: roomId,
             description,
         });
 
         console.log(newEvent);
 
+        // Associate the organizer with the event (attendees)
         await newEvent.setAttendees(organizer);
 
-        //Query the tags associated
-        if (attributeId) {
+        // If attributeIds are provided, associate the tags (attributes) with the event
+        if (attributeIds && attributeIds.length > 0) {
+            console.log(attributeIds);
 
-            console.log(attributeId);
-            // tags is an array of attributeIds
+            // Fetch the attribute instances using the array of IDs
             const tagInstances = await Attribute.findAll({
-                where: { attributeId: attributeId },
-            })
+                where: {
+                    attributeId: attributeIds,
+                },
+            });
 
-            //  'setTags' comes from `belongsToMany`
-            // it creates an association between Event and Attributes table
+            // Associate tags (attributes) with the event 
             await newEvent.setTags(tagInstances);
         }
 
         return res.status(201).json({
-            message: "Event created sucessfully.",
+            message: "Event created successfully.",
             event: newEvent,
         });
 
     } catch (error) {
         console.error("Error creating event:", error);
 
-        return res.status(400).json(
-            {
-                error: "Error creating event.", details: error.message,
-
-            }
-        );
+        return res.status(400).json({
+            error: "Error creating event.",
+            details: error.message,
+        });
     }
 };
 
