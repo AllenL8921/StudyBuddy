@@ -42,7 +42,7 @@ export default (sequelize) => {
             through: "EventUsers",
             as: "Attendees",
             foreignKey: "eventId",
-            otherKey: "userId"
+            otherKey: "clerkUserId"
         });
 
         // One-to-many relationship with Attributes (tags)
@@ -52,6 +52,7 @@ export default (sequelize) => {
             foreignKey: "eventId",
             otherKey: "attributeId",
         });
+
     };
 
     return Event;

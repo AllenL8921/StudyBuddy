@@ -6,16 +6,14 @@ import { useUser } from '@clerk/clerk-react';
 // Initialize the socket connection
 const socket = io("http://localhost:8080");
 
-const Chat = () => {
+const Chat = ({roomId, messages, setMessages}) => {
     //UserData
-    const { isSignedIn, user } = useUser();
+    const { user } = useUser();
     const [displayName, setDisplayName] = useState('');
 
     //Chat messages
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
     const [isSending, setIsSending] = useState(false); // Track sending state
-    const roomId = 123;
 
     useEffect(() => {
 
@@ -55,6 +53,7 @@ const Chat = () => {
                 if (data && data.length) {
                     setMessages(data);
                 } else {
+                    setMessages([])
                     console.log('No messages found');
                 }
             } catch (error) {
@@ -90,7 +89,7 @@ const Chat = () => {
 
         setIsSending(true);
 
-        const msgData = { roomId: roomId, senderId: user.id, text: message.trim() };
+        const msgData = { roomId: roomId, senderId: user.id, displayName:displayName, text: message.trim() };
         console.log("Sending message:", msgData);
 
         socket.emit('chatMessage', msgData, (response) => {
@@ -120,10 +119,6 @@ const Chat = () => {
 
     return (
         <div className="flex h-screen">
-            {/* Sidebar */}
-            <div className="w-1/4 bg-gray-200 overflow-y-auto">
-                <Sidebar />
-            </div>
 
             {/* Main Content (Chat area + Right Column) */}
             <div className="flex-grow flex">

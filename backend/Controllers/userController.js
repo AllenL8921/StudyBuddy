@@ -5,7 +5,7 @@
 
 //Import Models
 import db from '../Models/_db.js';
-const { User, StudyRoom, Event } = db;
+const { User, StudySession, Event } = db;
 
 const getExistingUsers = async (req, res) => {
     try {
@@ -108,7 +108,7 @@ const getFriends = async (req, res) => {
         if (!userWithFriends) {
             return res.status(404).json({ error: 'User not found' });
         }
-
+        console.log('Fetched friends: ', userWithFriends)
         return res.status(200).json(userWithFriends.Friends);
 
     } catch (error) {
@@ -145,7 +145,7 @@ const joinRoom = async (req, res) => {
         const { userId, eventId } = req.body;
 
         // Find the event from eventId
-        const event = StudyRoom.findByPk(eventId);
+        const event = StudySession.findByPk(eventId);
 
         // Validation checks
         // 1. User can not join an event that they are currently in
@@ -196,21 +196,43 @@ const getChatRoomByUserId = async (req, res) => {
     try {
         //Look for all chatrooms that the user is in
 
-        const chatRooms = await ChatRoom.findAll({
+        const studySessions = await User.findOne({
+            where: { clerkUserId: userId },
             include: {
-                model: User,
-                as: 'Participants',
-                where: { clerkUserId: userId },
-                required: true,
+                model: StudySession,
+                as: 'StudySessions',
             }
         });
+        const studyChatRooms = studySessions.StudySessions
 
-        console.log("getChatRoomByUserId: ", chatRooms)
-        if (!chatRooms) {
+        const events = await User.findOne({
+            where: { clerkUserId: userId },
+            include: {
+                model: Event,
+                as: 'Events',
+            }
+        });
+        const eventChatRooms = events.Events
+
+        const allChatRooms = [
+            studyChatRooms.map(session => ({
+                chatRoomId: session.chatRoomId,
+                title: session.title,
+                description: session.description,
+            })),
+            eventChatRooms.map(event => ({
+                chatRoomId: event.chatRoomId,
+                title: event.title,
+                description: event.description,
+            })),
+        ];
+
+        console.log("getChatRoomByUserId: ", allChatRooms)
+        if (allChatRooms.length === 0) {
             return res.status(404).json({ error: "Chat Room Not Found" })
         }
 
-        return res.status(200).json(chatRooms);
+        return res.status(200).json(allChatRooms);
 
     } catch (error) {
         console.log(error)
