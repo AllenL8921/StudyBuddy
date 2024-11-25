@@ -67,6 +67,14 @@ export default (sequelize) => {
             onDelete: 'CASCADE',
         });
 
+        User.belongsToMany(models.StudySession, {
+            through: 'UserStudySessions',
+            as: 'StudySessions',
+            foreignKey: 'clerkUserId',
+            otherKey: 'studySessionId',
+            onDelete: 'CASCADE',
+        });
+
         User.belongsToMany(models.ChatRoom, {
             through: 'UserChatRooms',
             as: 'Participants',

@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 export default (sequelize) => {
     const Message = sequelize.define('Message', {
         roomId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.UUID,
             allowNull: false, // roomId should not be nullable
         },
         messageId: {
