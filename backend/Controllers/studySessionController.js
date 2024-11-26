@@ -1,6 +1,6 @@
 import db from '../Models/_db.js'
 
-const { StudySession } = db
+const { User, Attribute, ChatRoom, StudySession } = db
 
 //Define functionality for StudySession routes
 
@@ -8,7 +8,7 @@ const createStudySession = async (req, res) => {
 
     try {
 
-        const { organizerId, studySessionName, description, attributeIds } = req.body;
+        const { title, organizerId, isPublic, description, attributeIds } = req.body;
 
         console.log("Received: ", req.body);
 
@@ -32,15 +32,17 @@ const createStudySession = async (req, res) => {
 
 
         const newStudySession = await StudySession.create({
+            title,
             organizerId,
-            studySessionName,
+            isPublic,
+            studySessionName: title,
             chatRoomId: roomId,
             description,
         });
 
         console.log(newStudySession);
 
-        await newEvent.setAttendees(organizer);
+        await newStudySession.setAttendees(organizer);
 
         //Query the tags associated
         if (attributeIds && attributeIds.length > 0) {

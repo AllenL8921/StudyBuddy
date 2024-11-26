@@ -6,6 +6,7 @@ export default function EventCard({ eventId, title, date, description }) {
 
     useEffect(() => {
         const formatDate = () => {
+
             if (!date) {
                 setFormattedDate('No date available');
                 return;

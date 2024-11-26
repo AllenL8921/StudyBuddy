@@ -97,7 +97,9 @@ const EventList = () => {
 
                 {/* Event Creation Button */}
                 <div className="fixed bottom-6 right-6">
-                    <EventCreate />
+                    <EventCreate
+                        addEvent={newEvent => setEvents(prevSessions => [...prevSessions, newEvent])}
+                    />
                 </div>
             </div>
         </>

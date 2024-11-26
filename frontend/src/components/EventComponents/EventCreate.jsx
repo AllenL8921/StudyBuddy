@@ -3,7 +3,7 @@ import { FaCalendarPlus } from 'react-icons/fa';
 import { useUser } from '@clerk/clerk-react'; // Assuming you have a custom hook for user data
 import AttributesDropDown from '../AttributesDropDown';
 
-const EventForm = () => {
+const EventForm = ({ addEvent }) => {
     const { user } = useUser();
     const [eventData, setEventData] = useState({
         title: '',
@@ -46,12 +46,12 @@ const EventForm = () => {
         setSuccess('');
 
         try {
-            // Prepare the event data to submit, including an array of attribute IDs
+            //Create eventData object to be sent
             const eventDataToSubmit = {
                 title: eventData.title,
                 description: eventData.description,
                 date: eventData.date,
-                attributeIds: eventData.selectedAttribute.map(attr => attr.value), // Map to extract IDs
+                attributeIds: eventData.selectedAttribute.map(attr => attr.value),
                 organizerId: user.id,
             };
 
@@ -70,6 +70,7 @@ const EventForm = () => {
             }
 
             setSuccess('Event created successfully!');
+            addEvent(eventData);
             setEventData({ title: '', date: '', description: '', selectedAttribute: [] }); // Clear the form
 
             setIsFormVisible(false);

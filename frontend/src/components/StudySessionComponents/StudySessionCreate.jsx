@@ -1,31 +1,63 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { useUser } from '@clerk/clerk-react';
 import { FaCalendarPlus } from 'react-icons/fa';
 
-export default function StudySessionCreate() {
+//Import Components
+import AttributesDropDown from '../AttributesDropDown';
+
+export default function StudySessionCreate(studySessionList, addStudySession) {
 
     const { user } = useUser();
 
-    const [studySessionData, setstudySessionData] = useState({
-        studySessionName: '',
-        isPublic: '',
+    const [studySessionData, setStudySessionData] = useState({
+        title: '',
+        isPublic: true,
         description: '',
-        selectedAttribute: null,
+        selectedAttribute: [],
     });
 
     //Form visibility and control
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [isIconVisible, setIsIconVisible] = useState(true);
+
+    const [loading, setLoading] = useState(false);
+
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
 
     const [formShrink, setFormShrink] = useState(false);
-    const [isIconVisible, setIsIconVisible] = useState(true);
 
+    useEffect(() => {
+        if (studySessionData.selectedAttribute) {
+            console.log("Updated attribute tags: ", studySessionData.selectedAttribute);
+        }
+    }, [studySessionData.selectedAttribute]);
 
+    const handleAttributeChange = (selectedOptions) => {
+        console.log("Selected Options: ", selectedOptions);
+
+        //Iterate through the data fields
+        setStudySessionData(prevData => ({
+            ...prevData,
+            selectedAttribute: selectedOptions || [],
+        }));
+    };
     const handleChange = (e) => {
-        const { label, value } = e.target;
-        setstudySessionData({ ...setstudySessionData, [label]: value });
+        const { name, value, type, checked } = e.target;
+
+        setStudySessionData(prevData => ({
+            ...prevData,
+            [name]: type === "checkbox" ? checked : value, //Checks if the field is a checkbox value
+        }));
+    };
+
+    const handleGoBack = (e) => {
+        setFormShrink(true);
+        setTimeout(() => {
+            setIsFormVisible(false);
+            setIsIconVisible(true);
+        }, 300);
     };
 
     const handleIconClick = () => {
@@ -34,17 +66,45 @@ export default function StudySessionCreate() {
         setFormShrink(false);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e) => {
         try {
             //Make a POST request to the backend API
 
-            //Create session object to be sent
+            //Create sessionData object to be sent
             const sessionDataToSubmit = {
-                title: studySessionData.studySessionName,
+                title: studySessionData.title,
+                isPublic: studySessionData.isPublic,
+                description: studySessionData.description,
+                attributeIds: studySessionData.selectedAttribute.map(attr => attr.value),
+                organizerId: user.id,
             };
 
-        } catch (error) {
+            console.log(sessionDataToSubmit);
 
+            const response = await fetch('http://localhost:8080/api/studySessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sessionDataToSubmit),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create study session');
+            }
+
+            setSuccess('Event created successfully!');
+
+            setStudySessionData({ title: '', date: '', description: '', selectedAttribute: [] });
+            addStudySession(studySessionData);
+
+            setIsFormVisible(false);
+            setFormShrink(true); // Start shrinking animation
+            setIsIconVisible(true); // Show the calendar icon after shrinking
+        } catch (error) {
+            setError(err.message || 'An error occurred. Please try again.');
+        } finally {
+            setLoading(false);
         }
 
     };
@@ -66,7 +126,8 @@ export default function StudySessionCreate() {
             {
                 isFormVisible && (
 
-                    <div className={`fixed flex items-center justify-center bg-white rounded-lg shadow-xl z-50 transition-all transform maxx-w-lg w-full p-6`}
+                    <div
+                        className={`fixed flex items-center justify-center bg-white rounded-lg shadow-xl z-40 transition-all transform max-w-lg w-full p-6`}
                         style={{
                             top: '50%',
                             left: '50%',
@@ -84,12 +145,12 @@ export default function StudySessionCreate() {
 
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-4">
-                                    <label htmlFor="studySessionName" className="block text-sm font-medium text-gray-700">Study Session Name</label>
+                                    <label htmlFor="title" className="block text-sm font-medium text-gray-700">Study Session Name</label>
                                     <input
-                                        id="studySessionName"
-                                        name="studySessionName"
+                                        id="title"
+                                        name="title"
                                         type="text"
-                                        value={studySessionData.studySessionName}
+                                        value={studySessionData.title}
                                         onChange={handleChange}
                                         className="mt-2 w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800" // Added text-gray-800 here
                                         required
@@ -124,12 +185,19 @@ export default function StudySessionCreate() {
                                     />
                                 </div>
 
+                                <div className="mb-4">
+                                    <AttributesDropDown selectedAttribute={studySessionData.selectedAttribute}
+                                        onSelect={handleAttributeChange}
+                                    />
+                                </div>
+
                                 <button type='submit'
-                                    className='w-full '>
+                                    className='w-full mt-4 bg-blue-600 text-white p-2 rounded-md shadow-sm hover:bg-blue-700 focus:ring-blue-500 disabled:bg-blue-400'
+                                >
+
+                                    {loading ? 'Submitting...' : 'Create Event'}
 
                                 </button>
-
-
                             </form>
 
                             <button
@@ -139,9 +207,6 @@ export default function StudySessionCreate() {
                                 &times;
                             </button>
                         </div>
-
-
-
                     </div>
                 )
 

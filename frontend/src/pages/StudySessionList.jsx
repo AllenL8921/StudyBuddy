@@ -76,7 +76,10 @@ const StudySession = () => {
 
                 {/* Study Session Creation Button */}
                 <div className="fixed bottom-6 right-6">
-                    <StudySessionCreate />
+                    <StudySessionCreate
+                        studySessionList={studySession}
+                        addStudySession={newSession => setStudySession(prevSessions => [...prevSessions, newSession])}
+                    />
                 </div>
 
             </div>
