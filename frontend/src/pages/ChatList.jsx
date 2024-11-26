@@ -1,11 +1,14 @@
-import Sidebar from "../components/Sidebar";
 import { useState, useEffect } from "react";
-import Chat from "../components/Chat";
 import { useUser } from "@clerk/clerk-react";
+
+//Import Components
+import Sidebar from "../components/Sidebar";
+import Chat from "../components/Chat";
 import ChatSideBar from "../components/SidebarComponents/ChatSideBar";
 
 const ChatList = () => {
     const { user } = useUser();
+
     const [messages, setMessages] = useState([]);
     const [roomId, setRoomId] = useState(null);
     const [studyChatRooms, setStudyChatRooms] = useState([])
@@ -26,13 +29,13 @@ const ChatList = () => {
                 }
 
                 //Debug
-                console.log('fetchChatRooms ',data);
+                console.log('fetchChatRooms ', data);
             } catch (error) {
                 console.error("Error fetching chat rooms:", error);
             }
-        }
+        };
 
-        fetchChatRooms()
+        fetchChatRooms();
     }, [user]);
 
     return (

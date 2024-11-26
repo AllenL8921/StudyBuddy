@@ -1,12 +1,12 @@
-import Sidebar from "./Sidebar";
 import { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
 import { useUser } from '@clerk/clerk-react';
+
+import { io } from 'socket.io-client';
 
 // Initialize the socket connection
 const socket = io("http://localhost:8080");
 
-const Chat = ({roomId, messages, setMessages}) => {
+const Chat = ({ roomId, messages, setMessages }) => {
     //UserData
     const { user } = useUser();
     const [displayName, setDisplayName] = useState('');
@@ -20,7 +20,7 @@ const Chat = ({roomId, messages, setMessages}) => {
         // Fetch userinfo for displayname from DB
         const fetchUserDisplayName = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/users/${user.id}`);
+                const response = await fetch(`http://localhost:8080/api/users/userId/${user.id}`);
 
                 // Check if the response is ok (status 200)
                 if (!response.ok) {
@@ -30,12 +30,8 @@ const Chat = ({roomId, messages, setMessages}) => {
                 const data = await response.json();
                 console.log('Fetched user data from the server:', data);
 
-                // Ensure data has displayName property before setting it
-                if (data && data.user.displayName) {
-                    setDisplayName(data.user.displayName);
-                } else {
-                    console.warn('No display name found in the response');
-                }
+                setDisplayName(data.user.displayName);
+
 
             } catch (error) {
                 console.error('Error fetching user display name:', error);
@@ -89,7 +85,7 @@ const Chat = ({roomId, messages, setMessages}) => {
 
         setIsSending(true);
 
-        const msgData = { roomId: roomId, senderId: user.id, displayName:displayName, text: message.trim() };
+        const msgData = { roomId: roomId, senderId: user.id, displayName: displayName, text: message.trim() };
         console.log("Sending message:", msgData);
 
         socket.emit('chatMessage', msgData, (response) => {
