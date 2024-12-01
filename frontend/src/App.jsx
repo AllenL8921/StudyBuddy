@@ -11,7 +11,7 @@ import DashBoard from './pages/Dashboard';
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import StudySessionList from './pages/StudySessionList';
-import EventList from './pages/EventList';
+import EventPage from './pages/EventPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ChatList from './pages/ChatList';
 import StudyRoom from './pages/StudyRoom';
@@ -36,7 +36,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/sessions" element={<StudySessionList />} />
-        <Route path="/events" element={<EventList />} />
+        <Route path="/events" element={<EventPage />} />
         <Route path="/friends" element={<FriendList />} />
         <Route path="/register" element={<SignUpPage />} />
         <Route path="/login" element={<SignInPage />} />

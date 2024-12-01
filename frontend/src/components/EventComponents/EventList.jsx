@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
 
 // Import Components
-import EventCreate from '../components/EventComponents/EventCreate';
-import EventCard from '../components/EventComponents/EventCard';
-import Sidebar from '../components/Sidebar';
-import Searchbar from '../components/Searchbar';
+import EventCreate from './EventCreate';
+import EventCard from './EventCard';
 
-const EventList = () => {
+const EventList = ({ eventsData, loading }) => {
+
     const [events, setEvents] = useState([]); // List of events
-    const [loading, setLoading] = useState(false); // Loading state
     const [page, setPage] = useState(1); // Page number for pagination
 
     useEffect(() => {
@@ -17,11 +15,10 @@ const EventList = () => {
     }, [page]);
 
     const fetchEvents = async (pageNumber) => {
-        setLoading(true);
 
         try {
             // Fetch events from the API, passing the page number for pagination
-            const response = await fetch(`http://localhost:8080/api/events?page=${pageNumber}`);
+            const response = await fetch(`http://localhost:8080/api/events`);
             const newEvents = await response.json();
 
             // When loading the first page, reset the events list
@@ -40,8 +37,6 @@ const EventList = () => {
             }
         } catch (error) {
             console.error('Error fetching events:', error);
-        } finally {
-            setLoading(false); // Set loading to false after fetching
         }
     };
 
@@ -63,12 +58,6 @@ const EventList = () => {
 
     return (
         <>
-            <Sidebar />
-
-            {/* Search Bar */}
-            <div className="py-5 w-full px-4 sm:px-8 lg:px-16 xl:px-32">
-                <Searchbar />
-            </div>
 
             <div className="min-h-screen flex flex-col items-center bg-gray-100">
                 {/* Events Grid */}

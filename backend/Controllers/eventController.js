@@ -2,6 +2,8 @@
 
 //Import models
 import db from "../Models/_db.js";
+import { Sequelize } from 'sequelize';
+
 const { User, ChatRoom, Event, Attribute } = db;
 
 const createEvent = async (req, res) => {
@@ -88,10 +90,28 @@ const getAllEvents = async (req, res) => {
     }
 };
 
-const getEvents = async (req, res) => {
+const getEventByName = async (req, res) => {
+    const { name } = req.query;
+    console.log(name);
+
+    if (!name) {
+        return res.status(400).json({ message: 'Please provide a searcch term' });
+    }
 
     try {
 
+        const events = await Event.findAll({
+            where: {
+                title: {
+                    [Sequelize.Op.iLike]: `%${name}%`,
+                },
+            },
+        });
+
+        if (events.length === 0) {
+            return res.status(404).json({ message: 'No events found' });
+        }
+        res.status(200).json(events);
 
     } catch (error) {
         console.log("Error getting events: ", error);
@@ -104,4 +124,4 @@ const getEvents = async (req, res) => {
     }
 };
 
-export { createEvent, getAllEvents };
+export { createEvent, getAllEvents, getEventByName };

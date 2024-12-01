@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
-export default function Searchbar({onSearch}) {
+export default function Searchbar({ onSearch, category }) {
     const [query, setQuery] = useState('');
+    const [endpoint, setEndpoint] = useState(category);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         setQuery(e.target.value);
@@ -9,14 +12,36 @@ export default function Searchbar({onSearch}) {
 
     const handleSearch = async (e) => {
         e.preventDefault();
+        if (!query.trim()) return;
+
+        setLoading(true);
+        setError(null);
         console.log('Searching for:', query);
         // You can replace the console.log with an actual search functionality, e.g., API call.
-        if (onSearch) {
-            console.log('On Searching for:', query);
-            await onSearch(query)
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/${endpoint}/search?name=${query}`);
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('Search results:', data);
+
+            if (onSearch) {
+                onSearch(data);
+            }
+
+            setQuery('');
+        } catch (error) {
+            setError('Something went wrong. Please try again.');
+            console.error('Search error:', error);
+        } finally {
+            setLoading(false);
         }
     };
-    
+
 
     return (
         <div className="flex justify-center items-center p-4">
@@ -35,6 +60,12 @@ export default function Searchbar({onSearch}) {
                     Search
                 </button>
             </form>
+
+            {error && (
+                <div className="mt-4 text-red-600">
+                    <p>{error}</p>
+                </div>
+            )}
         </div>
     );
 }
