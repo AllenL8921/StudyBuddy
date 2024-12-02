@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 
 //Import components
 import Whiteboard from '../components/Whiteboard'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/GeneralComponents/Navbar'
 
 export default function StudyRoom() {
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
 
 //Import Components
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/GeneralComponents/Sidebar";
 import Chat from "../components/Chat";
 import ChatSideBar from "../components/SidebarComponents/ChatSideBar";
 

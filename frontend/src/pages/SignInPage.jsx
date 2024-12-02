@@ -1,7 +1,7 @@
 // pages/SignIn.js
 import React from 'react';
 import { SignIn as ClerkSignIn } from '@clerk/clerk-react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/GeneralComponents/Navbar';
 
 const SignInPage = () => {
 

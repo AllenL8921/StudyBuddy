@@ -1,7 +1,8 @@
-import  Sidebar  from '../components/Sidebar'
-import Searchbar from '../components/Searchbar'
+import Sidebar from '../components/GeneralComponents/Sidebar'
+import Searchbar from '../components/GeneralComponents/Searchbar'
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/clerk-react'
+
 
 const FriendList = () => {
     const { user } = useUser()
@@ -26,7 +27,7 @@ const FriendList = () => {
                 setSearchResults([]);
                 setShowSearchModal(true);
             }
-            
+
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -83,14 +84,14 @@ const FriendList = () => {
         fetchFriends()
     }, [user]);
 
-    
+
 
     return (
         <div className="flex h-screen">
             <div className="w-1/4 ml-60 bg-gray-200 overflow-y-auto">
                 <Sidebar />
                 <Searchbar onSearch={searchUsers} />
-                
+
                 {/* Friend List */}
                 <div className="p-4 mt-8">
                     <h2 className="text-lg font-semibold mb-4">Friends</h2>

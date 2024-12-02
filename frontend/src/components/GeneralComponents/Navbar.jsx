@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/StudyTogetherIcon.png';
+import Logo from '../../assets/StudyTogetherIcon.png';
 import { UserButton, useAuth } from '@clerk/clerk-react';
 
 const Navbar = () => {

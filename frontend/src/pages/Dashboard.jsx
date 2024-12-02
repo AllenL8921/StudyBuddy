@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../components/GeneralComponents/Sidebar';
 import PropTypes from 'prop-types';
 
 // Memoize the UserProfile component to avoid unnecessary re-renders

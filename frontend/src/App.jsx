@@ -4,13 +4,13 @@ import { useAuth } from '@clerk/clerk-react';
 
 // Component Imports
 import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import Navbar from './components/GeneralComponents/Navbar';
 // Pages Imports
 import Home from "./pages/HomePage";
 import DashBoard from './pages/Dashboard';
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import StudySessionList from './pages/StudySessionList';
+import StudySessionList from './components/StudySessionComponents/StudySessionList';
 import EventPage from './pages/EventPage';
 import AboutUsPage from './pages/AboutUsPage';
 import ChatList from './pages/ChatList';
