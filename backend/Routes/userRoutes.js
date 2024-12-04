@@ -2,7 +2,7 @@
 import express from 'express';
 
 //Import functionality
-import { getExistingUsers, getUserInfoById, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinEvent, getUserInfoByName } from '../Controllers/userController.js';
+import { getExistingUsers, getUserInfoById, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinEvent, joinRoom, getUserInfoByName } from '../Controllers/userController.js';
 
 const router = express.Router();
 
@@ -10,6 +10,8 @@ const router = express.Router();
 router.post('/relationships', addFriend);
 router.post('/:id/displayName', setDisplayName);
 router.post('/addFriend', addFriend);
+router.post('/joinEvent', joinEvent);
+router.post('/joinRoom', joinRoom);
 
 // GET routes
 router.get('/', getExistingUsers);

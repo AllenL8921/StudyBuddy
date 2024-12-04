@@ -52,10 +52,11 @@ const StudySession = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         {studySession.map((event) => (
                             <EventCard
-                                key={event.roomId}
-                                roomId={event.roomId}
+                                key={event.studySessionId}
+                                eventId={event.studySessionId}
                                 title={event.title}
                                 description={event.description}
+                                endpoint='joinRoom'
                             />
                         ))}
                     </div>

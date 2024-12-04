@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useUser } from "@clerk/clerk-react";
 
-export default function EventCard({ eventId, title, date, description }) {
+export default function EventCard({ eventId, title, date, description, endpoint }) {
 
     const [formattedDate, setFormattedDate] = useState('');
+    const { user } = useUser();
 
     useEffect(() => {
         const formatDate = () => {
@@ -27,8 +29,20 @@ export default function EventCard({ eventId, title, date, description }) {
         formatDate();
     }, [date]);
 
-    const handleButton = () => {
+    const handleButton = async () => {
+        console.log(eventId, title, date, description, endpoint)
         // Handle join event logic
+        const response = await fetch(`http://localhost:8080/api/users/${endpoint}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: user.id, eventId: eventId }),
+            }
+        )
+        const data = response.json();
+        console.log(data.message)
+
     };
 
     return (
