@@ -124,4 +124,29 @@ const getEventByName = async (req, res) => {
     }
 };
 
+const getAttendees = async (req, res) => {
+
+    try {
+        const { eventId } = req.params;
+
+        console.log(`Trying to fetch attendees of ${eventId}`);
+
+        const attendees = await Event.findOne({
+            where: { eventId: eventId },
+            include: [{ model: User, as: 'Attendees' }]
+        });
+
+        // Check if the attendees was found
+        if (!attendees) {
+            return res.status(404).json({ error: 'Attendees not found' });
+        }
+        console.log('Fetched attendees: ', attendees)
+        return res.status(200).json(attendees.Attendees);
+
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: error.message });
+    }
+};
+
 export { createEvent, getAllEvents, getEventByName };

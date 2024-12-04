@@ -133,12 +133,23 @@ const joinEvent = async (req, res) => {
         const { userId, eventId } = req.body;
 
         // Find the event from eventId
-        const event = Event.findByPk(eventId);
+        const event = await Event.findByPk(eventId);
+        const user = await User.findByPk(userId);
+
+        if (!user || !event) {
+            return res.status(404).json({ message: "User or event not found." });
+        }
 
         // Validation checks
         // 1. User can not join an event that they are currently in
+        const isUserAlreadyInEvent = await user.getEvents({ where: { eventId: eventId } });
 
+        if (isUserAlreadyInEvent.length > 0) {
+            return res.status(422).json({ message: "User is already a participant in this event." });
+        }
 
+        await event.addAttendees(userId);
+        return res.status(200).json({ message: "Attendee added successfully.", userId });
 
     } catch (error) {
         console.error("Error joining event:", error);
@@ -154,17 +165,28 @@ const joinRoom = async (req, res) => {
         const { userId, eventId } = req.body;
 
         // Find the event from eventId
-        const event = StudySession.findByPk(eventId);
+        const event = await StudySession.findByPk(eventId);
+        const user = await User.findByPk(userId);
+
+        if (!user || !event) {
+            return res.status(404).json({ message: "User or event not found." });
+        }
 
         // Validation checks
         // 1. User can not join an event that they are currently in
+        const isUserAlreadyInEvent = await user.getStudySessions({ where: { studySessionId: eventId } });
 
+        if (isUserAlreadyInEvent.length > 0) {
+            return res.status(422).json({ message: "User is already a participant in this room." });
+        }
 
+        await event.addParticipants(userId);
+        return res.status(200).json({ message: "Participant added successfully.", userId });
 
     } catch (error) {
-        console.error("Error joining event:", error);
+        console.error("Error joining room:", error);
 
-        return res.status(400).json("Error joining event.", error.message);
+        return res.status(400).json("Error joining room.", error.message);
     }
 };
 
@@ -274,4 +296,4 @@ const getUserInfoByName = async (req, res) => {
     }
 };
 
-export { getExistingUsers, getUserInfoById, getUserInfoByName, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinEvent };
+export { getExistingUsers, getUserInfoById, getUserInfoByName, getUserFriend, getChatRoomByUserId, setDisplayName, addFriend, getFriends, joinRoom, joinEvent };

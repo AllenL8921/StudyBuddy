@@ -70,6 +70,7 @@ const EventList = ({ eventsData, loading }) => {
                                 title={event.title}
                                 date={event.scheduledDate}
                                 description={event.description}
+                                endpoint='joinEvent'
                             />
                         ))}
                     </div>
