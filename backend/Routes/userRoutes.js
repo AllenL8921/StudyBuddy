@@ -15,7 +15,7 @@ router.post('/joinRoom', joinRoom);
 
 // GET routes
 router.get('/', getExistingUsers);
-router.get('/:username', getUserInfoByName);
+router.get('/search', getUserInfoByName);
 router.get('/userId/:userId', getUserInfoById); // This route gets the current user's information
 
 router.get('/relationships/:userId', getFriends);

@@ -2,6 +2,7 @@ import Sidebar from '../components/GeneralComponents/Sidebar'
 import Searchbar from '../components/GeneralComponents/Searchbar'
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/clerk-react'
+import FriendSideBar from '../components/SidebarComponents/FriendSideBar'
 
 
 const FriendList = () => {
@@ -14,20 +15,16 @@ const FriendList = () => {
     const [showMessageModal, setShowMessageModal] = useState(false); // Control message modal visibility
 
 
-    const searchUsers = async (query) => {
-        console.log(`Searching for users: ${query}`);
+    const handleSearch = (results) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/users/${query}`);
-            const user = await response.json();
-            console.log("searchUser ", user);
-            if (!user.error) {
-                setSearchResults([user]);
+            if (results) {
+                console.log('handleSearch',results.users)
+                setSearchResults(results.users);
                 setShowSearchModal(true);
             } else {
                 setSearchResults([]);
                 setShowSearchModal(true);
             }
-
         } catch (error) {
             console.error('Error fetching users:', error);
         }
@@ -90,10 +87,10 @@ const FriendList = () => {
         <div className="flex h-screen">
             <div className="w-1/4 ml-60 bg-gray-200 overflow-y-auto">
                 <Sidebar />
-                <Searchbar onSearch={searchUsers} />
+                <Searchbar onSearch={handleSearch} category={'users'} />
 
                 {/* Friend List */}
-                <div className="p-4 mt-8">
+                {/* <div className="p-4 mt-8">
                     <h2 className="text-lg font-semibold mb-4">Friends</h2>
                     <ul>
                         {friends.map((friend) => (
@@ -107,6 +104,10 @@ const FriendList = () => {
                             </li>
                         ))}
                     </ul>
+                </div> */}
+                <div className="p-4 mt-8">
+                    <h2 className="text-lg font-semibold mb-4">Friends</h2>
+                    <FriendSideBar friendList={friends} userId={friendId} setUserId={setFriendId} />
                 </div>
             </div>
 
@@ -121,18 +122,18 @@ const FriendList = () => {
 
                         {searchResults.length > 0 ? (
                             <ul>
-                                {searchResults.map((result) => (
+                                {searchResults.map((user) => (
                                     <li
-                                        key={result.user.clerkUserId}
+                                        key={user.clerkUserId}
                                         className="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
                                     >
                                         <img
-                                            src={result.user.imageUrl}
+                                            src={user.imageUrl}
                                             alt="User Avatar"
                                             className="rounded-full w-10 h-10 object-cover"
                                         />
-                                        <span className="ml-3">{result.user.username}</span>
-                                        <button onClick={() => handleAddFriend(result.user.clerkUserId)} className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Add</button>
+                                        <span className="ml-3">{user.username}</span>
+                                        <button onClick={() => handleAddFriend(user.clerkUserId)} className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Add</button>
                                     </li>
                                 ))}
                             </ul>

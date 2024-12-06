@@ -1,7 +1,7 @@
 import express from "express";
 
 //Import functionality
-import { createStudySession, getAllStudySessions } from '../Controllers/studySessionController.js';
+import { createStudySession, getAllStudySessions, getAttendees } from '../Controllers/studySessionController.js';
 
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.post('/', createStudySession);
 
 //GET
 router.get('/', getAllStudySessions);
+router.get('/getAttendees/:roomId', getAttendees);
 
 export default router;

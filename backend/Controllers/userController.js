@@ -5,6 +5,7 @@
 
 //Import Models
 import db from '../Models/_db.js';
+import { Sequelize } from 'sequelize';
 const { User, StudySession, Event } = db;
 
 const getExistingUsers = async (req, res) => {
@@ -93,6 +94,7 @@ const addFriend = async (req, res) => {
         }
 
         await user.addFriend(friendId);
+        await friend.addFriend(userId);
 
         return res.status(200).json({ message: "Friend added successfully.", friendId });
     } catch (error) {
@@ -117,7 +119,6 @@ const getFriends = async (req, res) => {
         if (!userWithFriends) {
             return res.status(404).json({ error: 'User not found' });
         }
-        console.log('Fetched friends: ', userWithFriends)
         return res.status(200).json(userWithFriends.Friends);
 
     } catch (error) {
@@ -274,25 +275,24 @@ const getChatRoomByUserId = async (req, res) => {
 const getUserInfoByName = async (req, res) => {
     try {
 
-        // Access username from the URL parameters (e.g. /users/:username)
-        const { username } = req.params;
+        const { name } = req.query;
 
         // Fetch the user from the database
-        const user = await User.findOne({ where: { username: username } });
+        const users = await User.findAll({ where: { username: { [Sequelize.Op.iLike]: `%${name}%` } } });
 
         // If the user is not found, return a 404 error
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+        if (users.length === 0) {
+            return res.status(404).json({ error: 'No users found' });
         }
 
         // Return the user info with a 200 status code
-        return res.status(200).json({ user });
+        return res.status(200).json({ users });
 
     } catch (error) {
-        console.error("Error getting user info:", error);
+        console.error("Error getting users:", error);
 
         // Send a 500 error response with a generic message
-        return res.status(500).json({ error: "Error getting user info" });
+        return res.status(500).json({ error: "Error getting users" });
     }
 };
 

@@ -92,4 +92,29 @@ const getAllStudySessions = async (req, res) => {
     }
 };
 
-export { createStudySession, getAllStudySessions }
+const getAttendees = async (req, res) => {
+
+    try {
+        const { roomId } = req.params;
+
+        console.log(`Trying to fetch attendees of room ${roomId}`);
+
+        const attendees = await StudySession.findOne({
+            where: { chatRoomId: roomId },
+            include: [{ model: User, as: 'Participants' }]
+        });
+
+        // Check if the attendees was found
+        if (!attendees) {
+            return res.status(404).json({ error: 'Attendees not found' });
+        }
+        console.log('Fetched attendees: ', attendees)
+        return res.status(200).json(attendees.Participants);
+
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ error: error.message });
+    }
+};
+
+export { createStudySession, getAttendees, getAllStudySessions }

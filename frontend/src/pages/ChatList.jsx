@@ -13,7 +13,7 @@ const ChatList = () => {
     const [roomId, setRoomId] = useState(null);
     const [studyChatRooms, setStudyChatRooms] = useState([])
     const [eventChatRooms, setEventChatrooms] = useState([])
-    const [filter, setFilter] = useState("study");
+    const [filter, setFilter] = useState("studySessions");
 
     useEffect(() => {
 
@@ -48,27 +48,27 @@ const ChatList = () => {
                     {/* Select Buttons */}
                     <div className="mb-4 flex justify-around">
                         <button
-                            className={`px-4 py-2 rounded ${filter === "study" ? "bg-indigo-500 text-white" : "bg-gray-300"}`}
-                            onClick={() => setFilter("study")}
+                            className={`px-4 py-2 rounded ${filter === "studySessions" ? "bg-indigo-500 text-white" : "bg-gray-300"}`}
+                            onClick={() => setFilter("studySessions")}
                         >
                             Study Sessions
                         </button>
                         <button
-                            className={`px-4 py-2 rounded ${filter === "event" ? "bg-indigo-500 text-white" : "bg-gray-300"}`}
-                            onClick={() => setFilter("event")}
+                            className={`px-4 py-2 rounded ${filter === "events" ? "bg-indigo-500 text-white" : "bg-gray-300"}`}
+                            onClick={() => setFilter("events")}
                         >
                             Events
                         </button>
                     </div>
 
-                    <ChatSideBar chatRooms={filter === "study" ? studyChatRooms : eventChatRooms} setRoomId={setRoomId} setMessages={setMessages} roomId={roomId} />
+                    <ChatSideBar chatRooms={filter === "studySessions" ? studyChatRooms : eventChatRooms} setRoomId={setRoomId} setMessages={setMessages} roomId={roomId} />
                 </div>
             </div>
 
             {/* Chat Area */}
             <div className="flex-grow">
                 {roomId ? (
-                    <Chat roomId={roomId} messages={messages} setMessages={setMessages} />
+                    <Chat catagory={ filter } roomId={roomId} messages={messages} setMessages={setMessages} />
                 ) : (
                     <div className="flex items-center justify-center h-full">
                         <p className="text-lg text-gray-500">Select a chat room to get started</p>
