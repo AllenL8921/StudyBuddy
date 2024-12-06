@@ -35,7 +35,7 @@ export default (sequelize) => {
         },
         imageUrl: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false,
         },
         email: {
             type: DataTypes.STRING,
