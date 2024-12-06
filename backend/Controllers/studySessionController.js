@@ -93,7 +93,7 @@ const getAllStudySessions = async (req, res) => {
             });
 
             return {
-                studySessionId: session.id,
+                studySessionId: session.studySessionId,
                 title: session.title,
                 description: session.description,
                 isPublic: session.isPublic,

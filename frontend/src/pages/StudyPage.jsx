@@ -18,7 +18,6 @@ export default function StudyPage() {
     useEffect(() => {
         fetchData();
         console.log('Study session data updated: ', studySessionData);
-
     }, []);
 
     const fetchData = async () => {
