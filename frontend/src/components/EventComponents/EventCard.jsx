@@ -32,13 +32,13 @@ export default function EventCard({ eventId, title, date, description, endpoint 
     const handleButton = async () => {
         console.log(eventId, title, date, description, endpoint)
         // Handle join event logic
-        const response = await fetch(`http://localhost:8080/api/users/${endpoint}`,{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId: user.id, eventId: eventId }),
-            }
+        const response = await fetch(`http://localhost:8080/api/users/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId: user.id, eventId: eventId }),
+        }
         )
         const data = response.json();
         console.log(data.message)

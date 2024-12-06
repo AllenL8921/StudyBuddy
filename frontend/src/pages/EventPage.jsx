@@ -47,6 +47,13 @@ export default function EventPage() {
         setFilteredEvents(results);
     };
 
+    const addEvent = (newEvent) => {
+        setEventsData((prevEvents) => {
+            const updatedEvents = [...prevEvents, newEvent];
+            setFilteredEvents(updatedEvents);
+            return updatedEvents;
+        });
+    };
 
     return (
         <div>
@@ -58,7 +65,7 @@ export default function EventPage() {
 
             <Carousel />
 
-            <EventList eventsData={filteredEvents} loading={loading} error={error} />
+            <EventList eventsData={filteredEvents} addEvent={addEvent} loading={loading} error={error} />
 
         </div>
     )

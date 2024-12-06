@@ -1,64 +1,31 @@
 import React, { useEffect, useState } from "react";
 
 // Import Components
-import Sidebar from "../GeneralComponents/Sidebar";
-import Searchbar from "../GeneralComponents/Searchbar";
 import EventCard from "../EventComponents/EventCard";
 import StudySessionCreate from "./StudySessionCreate";
 
-const StudySession = () => {
-
-    // Contains Data for the study session
-    const [studySession, setStudySession] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(1);
-
-    useEffect(() => {
-        fetchData();
-    }, [page]);
-
-    const fetchData = async () => {
-        setLoading(true);
-        const response = await fetch(`http://localhost:8080/api/studySessions`);
-        const newSessions = await response.json();
-
-        setStudySession(newSessions);
-        console.log(newSessions);
-
-        setLoading(false);
-    };
-
-    const onButtonClick = () => {
-        // TODO:: 
-        // Join the session 
-        // Then Update the associated tables
-
-        // Finally 
-        // Redirect to ../studyroom
-    };
+const StudySessionList = ({ studySessionData, addStudySession, loading }) => {
 
     return (
         <>
-            <Sidebar />
-            {/* Search Bar */}
-            <div className="py-5 w-full px-4 sm:px-8 lg:px-16 xl:px-32">
-                <Searchbar />
-            </div>
-
             <div className="min-h-screen flex flex-col items-center bg-gray-100">
 
                 {/* Study Session Grid */}
                 <div className="container mt-8 px-4 sm:px-8 lg:px-16 xl:px-32">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                        {studySession.map((event) => (
-                            <EventCard
-                                key={event.studySessionId}
-                                eventId={event.studySessionId}
-                                title={event.title}
-                                description={event.description}
-                                endpoint='joinRoom'
-                            />
-                        ))}
+                        {studySessionData.length > 0 ? (
+                            studySessionData.map((studySession) => (
+                                <EventCard
+                                    key={studySession.studySessionId}
+                                    eventId={studySession.studySessionId}
+                                    title={studySession.title}
+                                    description={studySession.description}
+                                    endpoint='joinRoom'
+                                />
+                            ))
+                        ) : (
+                            <p>No study sessions found.</p>
+                        )}
                     </div>
 
                     {/* Loading Spinner or Message */}
@@ -74,10 +41,7 @@ const StudySession = () => {
 
                 {/* Study Session Creation Button */}
                 <div className="fixed bottom-6 right-6">
-                    <StudySessionCreate
-                        studySessionList={studySession}
-                        addStudySession={newSession => setStudySession(prevSessions => [...prevSessions, newSession])}
-                    />
+                    <StudySessionCreate addStudySession={addStudySession} />
                 </div>
 
             </div>
@@ -85,4 +49,4 @@ const StudySession = () => {
     );
 };
 
-export default StudySession;
+export default StudySessionList;

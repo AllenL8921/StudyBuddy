@@ -2,7 +2,7 @@ import React from 'react';
 import EventCard from './EventCard';
 import EventCreate from './EventCreate';
 
-const EventList = ({ eventsData, loading }) => {
+const EventList = ({ eventsData, addEvent, loading }) => {
 
     return (
         <div className="min-h-screen flex flex-col items-center bg-gray-100">
@@ -38,7 +38,7 @@ const EventList = ({ eventsData, loading }) => {
             {/* Event Creation Button */}
             <div className="fixed bottom-6 right-6">
                 <EventCreate
-                    addEvent={newEvent => setEvents(prevEvents => [...prevEvents, newEvent])}
+                    addEvent={addEvent}
                 />
             </div>
         </div>

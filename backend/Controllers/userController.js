@@ -6,7 +6,7 @@
 //Import Models
 import db from '../Models/_db.js';
 import { Sequelize } from 'sequelize';
-const { User, StudySession, Event } = db;
+const { User, StudySession, Event, ChatRoom } = db;
 
 const getExistingUsers = async (req, res) => {
     try {
@@ -80,7 +80,7 @@ const addFriend = async (req, res) => {
             return res.status(422).json({ message: "You can't friend yourself." });
         }
 
-        const user = await User.findByPk(userId); // This should work if User is defined correctly
+        const user = await User.findByPk(userId);
         const friend = await User.findByPk(friendId);
 
         if (!user || !friend) {
@@ -93,8 +93,17 @@ const addFriend = async (req, res) => {
             return res.status(422).json({ message: "Friendship already exists." });
         }
 
+        // Create a new chatroom for this friendship 
+        const newChatRoom = await ChatRoom.create();
+        const roomId = newChatRoom.roomId;
+
+        // Add each other as friends via UserFriends table
         await user.addFriend(friendId);
         await friend.addFriend(userId);
+
+        // Link the chatroomId in the UserFriends table for both users
+        await user.addFriend(friendId, { through: { chatRoomId: roomId } });
+        await friend.addFriend(userId, { through: { chatRoomId: roomId } });
 
         return res.status(200).json({ message: "Friend added successfully.", friendId });
     } catch (error) {

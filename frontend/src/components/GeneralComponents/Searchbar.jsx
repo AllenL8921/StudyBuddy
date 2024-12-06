@@ -1,3 +1,5 @@
+// Search bar
+// Stores user query and returns it to a search function of a parent component
 import React, { useState } from 'react';
 
 export default function Searchbar({ onSearch }) {

@@ -44,6 +44,11 @@ export default function AboutUs() {
 
                     </div>
                 </div>
+                <div className="mt-8">
+                    <Link to="/sessions">
+                        <button className='bg-blue-700 text-white py-4 px-12 rounded-md hover:bg-blue-800 transition-colors duration-300'>Explore</button>
+                    </Link>
+                </div>
             </section>
         </>
     );
