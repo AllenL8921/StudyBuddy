@@ -4,6 +4,7 @@ import { useUser } from "@clerk/clerk-react";
 export default function EventCard({ eventId, organizer, title, date, description, endpoint }) {
 
     const [formattedDate, setFormattedDate] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const { user } = useUser();
 
     useEffect(() => {
@@ -41,14 +42,18 @@ export default function EventCard({ eventId, organizer, title, date, description
         }
         );
 
-        // Check if the response is OK (status code 200-299)
+        // Check if the response is OK 
         if (!response.ok) {
             throw new Error(`Error: ${response.statusText}`);
+            setSuccessMessage(`Failed to join event: ${error.message}`);
         }
+
+        // Response is OK
+        // Display a success message
+        setSuccessMessage('Successfully joined the event!');
 
         const data = await response.json();
         console.log(data.message)
-
     };
 
     return (
@@ -59,6 +64,12 @@ export default function EventCard({ eventId, organizer, title, date, description
 
             <p className="text-gray-600">{formattedDate}</p>
             <p className="mt-2 text-gray-700">{description}</p>
+
+            {successMessage && (
+                <div className="mt-4 p-2 bg-green-100 text-green-800 border border-green-300 rounded">
+                    {successMessage}
+                </div>
+            )}
 
             <div className="mt-4 flex justify-center">
                 <button

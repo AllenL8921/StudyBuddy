@@ -25,8 +25,6 @@ export default function EventPage() {
         try {
             const response = await fetch('http://localhost:8080/api/events');
             const data = await response.json();
-
-
             setEventsData(data);
             setFilteredEvents(data); // Initially, show all events
         } catch (error) {
