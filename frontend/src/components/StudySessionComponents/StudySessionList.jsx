@@ -19,6 +19,7 @@ const StudySessionList = ({ studySessionData, addStudySession, loading }) => {
                                     key={studySession.studySessionId}
                                     eventId={studySession.studySessionId}
                                     title={studySession.title}
+                                    organizer={studySession.organizerUsername}
                                     description={studySession.description}
                                     endpoint='joinRoom'
                                 />

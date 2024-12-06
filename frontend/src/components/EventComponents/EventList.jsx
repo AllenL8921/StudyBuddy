@@ -15,6 +15,7 @@ const EventList = ({ eventsData, addEvent, loading }) => {
                                 key={event.eventId}
                                 eventId={event.eventId}
                                 title={event.title}
+                                organizer={event.organizerUsername}
                                 date={event.scheduledDate}
                                 description={event.description}
                                 endpoint='joinEvent'

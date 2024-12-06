@@ -26,6 +26,8 @@ export default function EventPage() {
 
             setEventsData(data);
             setFilteredEvents(data); // Initially, show all events
+
+            console.log('Event data: ', eventsData);
         } catch (error) {
             console.error('Error fetching events:', error);
             setError('Something went wrong while fetching events. Please try again later.');

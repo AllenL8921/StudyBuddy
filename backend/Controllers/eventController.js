@@ -70,14 +70,25 @@ const createEvent = async (req, res) => {
 const getAllEvents = async (req, res) => {
 
     try {
-        const page = parseInt(req.query.page) || 1;  // Default to page 1
-        const limit = parseInt(req.query.limit) || 10;  // Default to 10 items per page
-        const offset = (page - 1) * limit;  // Calculate offset based on page and limit
-
         //TODO:: Apply query logic based on page, limit, offset
         const allEvents = await Event.findAll();
 
-        return res.status(200).json(allEvents);
+        const result = await Promise.all(allEvents.map(async event => {
+
+            const organizer = await User.findOne({
+                where: { clerkUserId: event.organizerId },
+                attributes: ['username'],
+            });
+
+            return {
+                id: event.eventId,
+                title: event.title,
+                description: event.description,
+                organizerUsername: organizer ? organizer.username : null,
+            }
+        }));
+
+        return res.status(200).json(result);
 
     } catch (error) {
         console.log("Error getting events: ", error);

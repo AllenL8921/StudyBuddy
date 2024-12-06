@@ -30,6 +30,7 @@ const FriendList = () => {
     //         console.error('Error fetching users:', error);
     //     }
     // };
+
     const handleSearch = (searchQuery) => {
         if (searchQuery.trim() === '') {
             handleCloseModal();
@@ -41,6 +42,7 @@ const FriendList = () => {
         const results = users.filter(user =>
             user.username.toLowerCase().includes(searchQuery.toLowerCase())
         );
+
         setSearchResults(results);
         setShowSearchModal(true);
     };
@@ -115,8 +117,6 @@ const FriendList = () => {
         }
         fetchUsers();
     }, [user]);
-
-
 
     return (
         <div className="flex h-screen">

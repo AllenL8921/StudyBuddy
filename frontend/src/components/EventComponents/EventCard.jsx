@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUser } from "@clerk/clerk-react";
 
-export default function EventCard({ eventId, title, date, description, endpoint }) {
+export default function EventCard({ eventId, organizer, title, date, description, endpoint }) {
 
     const [formattedDate, setFormattedDate] = useState('');
     const { user } = useUser();
@@ -49,6 +49,7 @@ export default function EventCard({ eventId, title, date, description, endpoint 
         <div className="relative w-full max-w-sm mx-auto p-4 bg-white rounded-lg shadow-lg">
             <h2 className="text-xl font-bold text-gray-800">{title}</h2>
             <h2 className="text-xl font-bold text-blue-500">{eventId}</h2>
+            <h2 className="text-xl font-bold text-blue-500">{'@' + organizer || 'Organizer not available'}</h2>
 
             <p className="text-gray-600">{formattedDate}</p>
             <p className="mt-2 text-gray-700">{description}</p>

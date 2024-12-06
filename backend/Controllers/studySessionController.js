@@ -85,7 +85,24 @@ const getAllStudySessions = async (req, res) => {
             }
         });
 
-        return res.status(200).json(studySessions);
+        const result = await Promise.all(studySessions.map(async session => {
+
+            const organizer = await User.findOne({
+                where: { clerkUserId: session.organizerId }, // Find the user by organizerId
+                attributes: ['username'],  // Only fetch the username
+            });
+
+            return {
+                id: session.id,
+                title: session.title,
+                description: session.description,
+                isPublic: session.isPublic,
+                organizerUsername: organizer ? organizer.username : null,  // Safely access username
+            };
+        }));
+
+
+        return res.status(200).json(result);
 
     } catch (error) {
         console.error("Error getting study sessions:", error);
