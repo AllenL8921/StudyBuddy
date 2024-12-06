@@ -30,7 +30,7 @@ export default function EventCard({ eventId, organizer, title, date, description
     }, [date]);
 
     const handleButton = async () => {
-        console.log(eventId, title, date, description, endpoint)
+        console.log('Parameters: ', eventId, title, date, description, endpoint)
         // Handle join event logic
         const response = await fetch(`http://localhost:8080/api/users/${endpoint}`, {
             method: 'POST',
@@ -39,8 +39,14 @@ export default function EventCard({ eventId, organizer, title, date, description
             },
             body: JSON.stringify({ userId: user.id, eventId: eventId }),
         }
-        )
-        const data = response.json();
+        );
+
+        // Check if the response is OK (status code 200-299)
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
         console.log(data.message)
 
     };

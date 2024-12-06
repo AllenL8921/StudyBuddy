@@ -16,6 +16,8 @@ export default function EventPage() {
     // Fetch all events when the component mounts
     useEffect(() => {
         fetchEvents();
+        console.log('Event data updated: ', eventsData);
+
     }, []);
 
     const fetchEvents = async () => {
@@ -24,10 +26,9 @@ export default function EventPage() {
             const response = await fetch('http://localhost:8080/api/events');
             const data = await response.json();
 
+
             setEventsData(data);
             setFilteredEvents(data); // Initially, show all events
-
-            console.log('Event data: ', eventsData);
         } catch (error) {
             console.error('Error fetching events:', error);
             setError('Something went wrong while fetching events. Please try again later.');

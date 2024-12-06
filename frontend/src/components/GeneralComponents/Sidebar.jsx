@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaHome, FaUserFriends, FaCalendarAlt, FaComments, FaSpinner, FaBars } from 'react-icons/fa';
+import { FaHome, FaUserFriends, FaCalendarAlt, FaComments, FaSpinner, FaBars, FaChalkboardTeacher } from 'react-icons/fa';
+
 import { useLocation, Link } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 
@@ -9,6 +10,9 @@ const navigation = [
   { name: "Event", href: "/events", icon: <FaCalendarAlt /> },
   { name: "Friends", href: "/friends", icon: <FaUserFriends /> },
   { name: "Chat", href: "/chat", icon: <FaComments /> },
+  {
+    name: "StudyRoom", href: "/studyroom", icon: <FaChalkboardTeacher />
+  },
 ];
 
 export default function Sidebar() {

@@ -81,7 +81,7 @@ const getAllEvents = async (req, res) => {
             });
 
             return {
-                id: event.eventId,
+                eventId: event.eventId,
                 title: event.title,
                 description: event.description,
                 organizerUsername: organizer ? organizer.username : null,

@@ -17,6 +17,8 @@ export default function StudyPage() {
 
     useEffect(() => {
         fetchData();
+        console.log('Study session data updated: ', studySessionData);
+
     }, []);
 
     const fetchData = async () => {
@@ -28,8 +30,6 @@ export default function StudyPage() {
 
             setStudySessionData(data);
             setFilteredSessionData(data); // Initially, show all sessions
-            console.log('Study Session Data', studySessionData);
-
         } catch (error) {
             console.error('Error fetching study sessions:', error);
             setError('Something went wrong while fetching study sessions. Please try again later.');
