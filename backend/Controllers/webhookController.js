@@ -68,7 +68,8 @@ const handleUserCreated = async (id, attributes) => {
             username: attributes.username || 'DefaultUsername',
             displayName: `Anonymous`,
             email: attributes.email_addresses[0]?.email_address || 'default@example.com',
-            password: attributes.password
+            password: attributes.password,
+            imageUrl: attributes.image_url || "https://www.pngkey.com/png/detail/115-1150152_default-profile-picture-avatar-png-green.png"
         });
         console.log(`User created: ${id}`);
     } catch (error) {

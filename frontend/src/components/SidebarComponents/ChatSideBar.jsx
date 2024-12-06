@@ -25,7 +25,7 @@ export default function ChatSideBar({ chatRooms, setRoomId, setMessages, roomId 
             {chatRooms.map((room) => (
                 <li
                     key={room.chatRoomId}
-                    className={`p-2 cursor-pointer ${roomId === room.chatRoomId ? "bg-gray-300" : "hover:bg-gray-100"}`}
+                    className={`p-2 cursor-pointer rounded-xl ${roomId === room.chatRoomId ? "bg-gray-300" : "hover:bg-gray-100"}`}
                     onClick={() => { setRoomId(room.chatRoomId), setMessages([]) }}
                 >
                     {room.title}

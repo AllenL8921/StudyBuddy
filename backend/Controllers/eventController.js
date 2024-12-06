@@ -127,12 +127,12 @@ const getEventByName = async (req, res) => {
 const getAttendees = async (req, res) => {
 
     try {
-        const { eventId } = req.params;
+        const { roomId } = req.params;
 
-        console.log(`Trying to fetch attendees of ${eventId}`);
+        console.log(`Trying to fetch attendees of room ${roomId}`);
 
         const attendees = await Event.findOne({
-            where: { eventId: eventId },
+            where: { chatRoomId: roomId },
             include: [{ model: User, as: 'Attendees' }]
         });
 
@@ -149,4 +149,4 @@ const getAttendees = async (req, res) => {
     }
 };
 
-export { createEvent, getAllEvents, getEventByName };
+export { createEvent, getAllEvents, getAttendees, getEventByName };

@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 
 import { io } from 'socket.io-client';
+import FriendSideBar from './SidebarComponents/FriendSideBar';
 
 // Initialize the socket connection
 const socket = io("http://localhost:8080");
 
-const Chat = ({ roomId, messages, setMessages }) => {
+const Chat = ({ catagory, roomId, messages, setMessages }) => {
     //UserData
     const { user } = useUser();
     const [displayName, setDisplayName] = useState('');
@@ -14,6 +15,9 @@ const Chat = ({ roomId, messages, setMessages }) => {
     //Chat messages
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false); // Track sending state
+
+    const [memberId, setMemberId] = useState();
+    const [member, setMember] = useState([]);
 
     useEffect(() => {
 
@@ -58,6 +62,22 @@ const Chat = ({ roomId, messages, setMessages }) => {
         };
 
         fetchMessages();
+
+        const getMemberList = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/api/${catagory}/getAttendees/${roomId}`);
+                const data = await response.json();
+                if (data && data.length) {
+                    setMember(data);
+                } else {
+                    setMember([])
+                    console.log('No participant found');
+                }
+            } catch (error) {
+                console.error('Error fetching participants:', error);
+            }
+        };
+        getMemberList()
 
         // Set up socket listener to receive new messages
         socket.on('chatMessage', (data) => {
@@ -151,13 +171,20 @@ const Chat = ({ roomId, messages, setMessages }) => {
                 </div>
 
                 {/* Right Column (1/3 of screen width) */}
-                <div className="w-1/3 bg-gray-100 p-4">
-                    <h2 className="text-xl font-semibold mb-4">User Info / Settings</h2>
+                <div className="w-1/3 bg-gray-100 shadow-md p-6 rounded-lg">
+                    <h2 className="text-xl font-semibold mb-4 border-b pb-3">User Info / Settings</h2>
                     {/* Add any content or widgets here for the right column */}
                     <div className="mb-4">
                         <p className="text-sm">Username: {user ? displayName : "Guest"}</p>
                         {/* You can add more information about the user or settings here */}
+
+                        {/* Members in the chat */}
+                        <div className="mt-8">
+                            <h2 className="text-lg font-semibold mb-4 border-b pb-3">Members</h2>
+                            <FriendSideBar friendList={member} userId={memberId} setuserId={setMemberId} />
+                        </div>
                     </div>
+    
                 </div>
             </div>
         </div>

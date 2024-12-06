@@ -3,7 +3,7 @@
 import express from 'express';
 
 //Import functionality
-import { createEvent, getAllEvents, getEventByName } from '../Controllers/eventController.js';
+import { createEvent, getAllEvents, getAttendees, getEventByName } from '../Controllers/eventController.js';
 
 const router = express.Router();
 
@@ -26,5 +26,6 @@ router.post('/', createEvent);
 //GET
 router.get('/', getAllEvents);
 router.get('/search', getEventByName);
+router.get('/getAttendees/:roomId', getAttendees);
 
 export default router;
