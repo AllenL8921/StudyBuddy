@@ -10,29 +10,44 @@ const FriendList = () => {
     const [friends, setFriends] = useState([])
     const [friendId, setFriendId] = useState()
     const [searchResults, setSearchResults] = useState([]); // Store search results
+    const [users, setUsers] = useState([]);
     const [showSearchModal, setShowSearchModal] = useState(false); // Control modal visibility
     const [message, setMessage] = useState(''); // Store API message
     const [showMessageModal, setShowMessageModal] = useState(false); // Control message modal visibility
 
 
-    const handleSearch = (results) => {
-        try {
-            if (results) {
-                console.log('handleSearch',results.users)
-                setSearchResults(results.users);
-                setShowSearchModal(true);
-            } else {
-                setSearchResults([]);
-                setShowSearchModal(true);
-            }
-        } catch (error) {
-            console.error('Error fetching users:', error);
+    // const handleSearch = (results) => {
+    //     try {
+    //         if (results) {
+    //             console.log('handleSearch',results.users)
+    //             setSearchResults(results.users);
+    //             setShowSearchModal(true);
+    //         } else {
+    //             setSearchResults([]);
+    //             setShowSearchModal(true);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching users:', error);
+    //     }
+    // };
+    const handleSearch = (searchQuery) => {
+        if (searchQuery.trim() === '') {
+            handleCloseModal();
+            setSearchResults(users);
+            return;
         }
+
+        // Filter users based on title (case-insensitive search)
+        const results = users.filter(user =>
+            user.username.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setSearchResults(results);
+        setShowSearchModal(true);
     };
 
     const handleCloseModal = () => {
         setShowSearchModal(false); // Hide the modal
-        setSearchResults([]); // Clear search results
+        setSearchResults(users); // Clear search results
     };
 
     const handleAddFriend = async (id) => {
@@ -79,6 +94,26 @@ const FriendList = () => {
         }
 
         fetchFriends()
+
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/api/users`);
+                if (!response.ok) {
+                    throw new Error(response.status);
+                }
+                const data = await response.json();
+                if (data) {
+                    console.log('fetchUsers', data)
+                    setUsers(data);
+                }
+
+                //Debug
+                console.log(users);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        }
+        fetchUsers();
     }, [user]);
 
 
@@ -89,22 +124,6 @@ const FriendList = () => {
                 <Sidebar />
                 <Searchbar onSearch={handleSearch} category={'users'} />
 
-                {/* Friend List */}
-                {/* <div className="p-4 mt-8">
-                    <h2 className="text-lg font-semibold mb-4">Friends</h2>
-                    <ul>
-                        {friends.map((friend) => (
-                            <li
-                                key={friend.clerkUserId}
-                                className={`flex items-center p-2 cursor-pointer ${friendId === friend.clerkUserId ? "bg-gray-300" : "hover:bg-gray-100"}`}
-                                onClick={() => setFriendId(friend.clerkUserId)}
-                            >
-                                <img src={friend.imageUrl} alt="User Avatar" className="rounded-full w-10 h-10 object-cover"></img>
-                                <span className="ml-3 ">{friend.username}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div> */}
                 <div className="p-4 mt-8">
                     <h2 className="text-lg font-semibold mb-4">Friends</h2>
                     <FriendSideBar friendList={friends} userId={friendId} setUserId={setFriendId} />

@@ -146,7 +146,7 @@ const Chat = ({ catagory, roomId, messages, setMessages }) => {
                     <div className="flex-grow border-t border-gray-300 p-4 overflow-y-auto">
                         {messages.map((msg, index) => (
                             <p key={index} className="mb-2">
-                                <strong className="text-indigo-600">{displayName}:</strong> {msg.text}
+                                <strong className="text-indigo-600">{msg.displayName}:</strong> {msg.text}
                             </p>
                         ))}
                     </div>
@@ -172,16 +172,17 @@ const Chat = ({ catagory, roomId, messages, setMessages }) => {
 
                 {/* Right Column (1/3 of screen width) */}
                 <div className="w-1/3 bg-gray-100 shadow-md p-6 rounded-lg">
-                    <h2 className="text-xl font-semibold mb-4 border-b pb-3">User Info / Settings</h2>
+                    <h2 className="text-xl font-semibold mb-4 border-b pb-3">User Info</h2>
                     {/* Add any content or widgets here for the right column */}
                     <div className="mb-4">
-                        <p className="text-sm">Username: {user ? displayName : "Guest"}</p>
+                        <p className="text-sm">
+                            <span className='font-medium'>Username: </span>{user ? displayName : "Guest"}</p>
                         {/* You can add more information about the user or settings here */}
 
                         {/* Members in the chat */}
                         <div className="mt-8">
                             <h2 className="text-lg font-semibold mb-4 border-b pb-3">Members</h2>
-                            <FriendSideBar friendList={member} userId={memberId} setuserId={setMemberId} />
+                            <FriendSideBar friendList={member} userId={memberId} setUserId={setMemberId} />
                         </div>
                     </div>
     
