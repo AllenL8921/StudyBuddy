@@ -3,33 +3,20 @@ import Searchbar from '../components/GeneralComponents/Searchbar'
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/clerk-react'
 import FriendSideBar from '../components/SidebarComponents/FriendSideBar'
+import Chat from '../components/Chat'
 
 
 const FriendList = () => {
     const { user } = useUser()
     const [friends, setFriends] = useState([])
-    const [friendId, setFriendId] = useState()
+    const [friend, setFriend] = useState()
     const [searchResults, setSearchResults] = useState([]); // Store search results
     const [users, setUsers] = useState([]);
     const [showSearchModal, setShowSearchModal] = useState(false); // Control modal visibility
     const [message, setMessage] = useState(''); // Store API message
+    const [messages, setMessages] = useState([]);//friend chat messages
     const [showMessageModal, setShowMessageModal] = useState(false); // Control message modal visibility
 
-
-    // const handleSearch = (results) => {
-    //     try {
-    //         if (results) {
-    //             console.log('handleSearch',results.users)
-    //             setSearchResults(results.users);
-    //             setShowSearchModal(true);
-    //         } else {
-    //             setSearchResults([]);
-    //             setShowSearchModal(true);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error fetching users:', error);
-    //     }
-    // };
 
     const handleSearch = (searchQuery) => {
         if (searchQuery.trim() === '') {
@@ -126,9 +113,14 @@ const FriendList = () => {
 
                 <div className="p-4 mt-8">
                     <h2 className="text-lg font-semibold mb-4">Friends</h2>
-                    <FriendSideBar friendList={friends} userId={friendId} setUserId={setFriendId} />
+                    <FriendSideBar friendList={friends} selectedFriend={friend} setSelectedFriend={setFriend} />
                 </div>
+
             </div>
+            {friend && <div className="flex-grow">
+                <Chat roomId={friend.UserFriends.chatRoomId} messages={messages} setMessages={setMessages} />
+            </div> }
+            
 
             {/* Search Result */}
             {showSearchModal && (

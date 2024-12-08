@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Profile from '../GeneralComponents/Profile';
 
-export default function FriendSideBar({ friendList, userId, setUserId }) {
+export default function FriendSideBar({ friendList, selectedFriend, setSelectedFriend }) {
     
-    const [selectedFriend, setSelectedFriend] = useState()
 
     return (
         <div>
@@ -11,9 +9,8 @@ export default function FriendSideBar({ friendList, userId, setUserId }) {
                 {friendList.map((friend) => (
                     <li
                         key={friend.clerkUserId}
-                        className={`flex items-center rounded-xl p-2 cursor-pointer ${userId === friend.clerkUserId ? "bg-gray-300" : "hover:bg-gray-100"}`}
+                        className={`flex items-center rounded-xl p-2 cursor-pointer ${selectedFriend?.clerkUserId === friend.clerkUserId ? "bg-gray-300" : "hover:bg-gray-100"}`}
                         onClick={() => {
-                            setUserId(friend.clerkUserId); 
                             setSelectedFriend(friend);
                         }}
                     >
@@ -26,8 +23,6 @@ export default function FriendSideBar({ friendList, userId, setUserId }) {
                 ))}
             </ul>
         
-            {/* Profile Info */}
-            <Profile selectedUser={selectedFriend} onClose={() => setSelectedFriend(null)}/>
         </div>
 
         
