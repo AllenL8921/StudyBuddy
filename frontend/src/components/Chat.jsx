@@ -3,6 +3,7 @@ import { useUser } from '@clerk/clerk-react';
 
 import { io } from 'socket.io-client';
 import FriendSideBar from './SidebarComponents/FriendSideBar';
+import Profile from './GeneralComponents/Profile';
 
 // Initialize the socket connection
 const socket = io("http://localhost:8080");
@@ -16,8 +17,8 @@ const Chat = ({ catagory, roomId, messages, setMessages }) => {
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false); // Track sending state
 
-    const [memberId, setMemberId] = useState();
-    const [member, setMember] = useState([]);
+    const [member, setMember] = useState();
+    const [members, setMembers] = useState([]);
 
     useEffect(() => {
 
@@ -68,9 +69,9 @@ const Chat = ({ catagory, roomId, messages, setMessages }) => {
                 const response = await fetch(`http://localhost:8080/api/${catagory}/getAttendees/${roomId}`);
                 const data = await response.json();
                 if (data && data.length) {
-                    setMember(data);
+                    setMembers(data);
                 } else {
-                    setMember([])
+                    setMembers([])
                     console.log('No participant found');
                 }
             } catch (error) {
@@ -182,8 +183,11 @@ const Chat = ({ catagory, roomId, messages, setMessages }) => {
                         {/* Members in the chat */}
                         <div className="mt-8">
                             <h2 className="text-lg font-semibold mb-4 border-b pb-3">Members</h2>
-                            <FriendSideBar friendList={member} userId={memberId} setUserId={setMemberId} />
+                            <FriendSideBar friendList={members} selectedFriend={member} setSelectedFriend={setMember} />
                         </div>
+
+                        {/* Profile Info */}
+                        <Profile selectedUser={member} onClose={() => setMember(null)}/>
                     </div>
     
                 </div>
